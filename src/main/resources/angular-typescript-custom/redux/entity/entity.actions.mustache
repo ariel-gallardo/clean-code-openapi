@@ -12,7 +12,7 @@ import { {{operationIdOriginal}}Request } from '@api/{{apiName}}/services/{{#lam
 import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{apiName}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
 {{/imports}}
 
-export default class Actions {
+export class {{entityName}}Actions {
 
   static Init = createAction('[{{entityName}}] Init');
   {{#operations}}

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
 import Api from '@api/Impecable/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service';
-import ReduxActions from './actions';
+import { {{entityName}}Actions } from './actions';
 
 @Injectable(
     
@@ -17,12 +17,12 @@ export default class Effects {
     {{#operation}}
     {{{operationIdOriginal}}}Execute$ = createEffect(() =>
     this.actions$.pipe(
-        ofType(ReduxActions.{{{operationIdOriginal}}}Execute),
+        ofType({{entityName}}Actions.{{{operationIdOriginal}}}Execute),
         switchMap(params =>
             this.api.{{{operationIdOriginal}}}(params).pipe(
-                {{#lambda.Skip}}map(data => ReduxActions.{{{operationIdOriginal}}}SetData(data)),{{/lambda.Skip}}
+                {{#lambda.Skip}}map(data => {{entityName}}Actions.{{{operationIdOriginal}}}SetData(data)),{{/lambda.Skip}}
                 catchError(error =>
-                    of(ReduxActions.{{{operationIdOriginal}}}SetError(error))
+                    of({{entityName}}Actions.{{{operationIdOriginal}}}SetError(error))
                 )
             )
         )

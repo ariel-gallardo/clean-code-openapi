@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 {{#allEntities}}
-import {{oEntity}}Module from './{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}/{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}.module';
+import { {{oEntity}}Module } from './{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}/{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}.module';
 {{/allEntities}}
 
 @NgModule({
@@ -12,7 +12,7 @@ import {{oEntity}}Module from './{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.Keb
     StoreModule.forRoot({}, {}),
     EffectsModule.forRoot([]),
     {{#allEntities}}
-    {{oEntity}}Module,
+    {{oEntity}}ReduxModule,
     {{/allEntities}}
   ],
 })

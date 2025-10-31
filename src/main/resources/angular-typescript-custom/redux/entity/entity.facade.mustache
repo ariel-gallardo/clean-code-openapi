@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import Actions from './actions';
 import {Pagination} from '../../models/common/pagination.model';
 import State from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.state';
-import ReduxModule from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.module';
+import { {{entityName}}ReduxModule } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.module';
 
 {{#exports}}
 import { {{{exportName}}} } from '@api/{{apiName}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}'; 
@@ -16,7 +16,7 @@ import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{
 {{/imports}}
 
 @Injectable(
-    providedIn: ReduxModule
+    providedIn: {{entityName}}ReduxModule
 )
 export default class {{name}}Facade {
   constructor(private store: Store<{ {{{entityName}}}: State }>) {}
