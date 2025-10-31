@@ -1,0 +1,36 @@
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import Actions from './actions';
+import {Pagination} from '../../models/common/pagination.model';
+import State from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.state';
+import ReduxModule from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.module';
+
+{{#exports}}
+import { {{{exportName}}} } from '@api/{{apiName}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}'; 
+{{/exports}}
+
+{{#imports}}
+import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{apiName}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model'; 
+{{/imports}}
+
+@Injectable(
+    providedIn: ReduxModule
+)
+export default class {{name}}Facade {
+  constructor(private store: Store<{ {{{entityName}}}: State }>) {}
+
+  {{#operations}}
+  {{#operation}}
+  get {{{operationIdOriginal}}}IsLoaded$(): Observable<boolean> { return this.store.select(state => state.{{{entityName}}}.{{{operationIdOriginal}}}.isLoaded); }
+  get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(state => state.{{{entityName}}}.{{{operationIdOriginal}}}.data); }
+  get {{{operationIdOriginal}}}Error$(): Observable<ValidationError[]> { return this.store.select(state => state.{{{entityName}}}.{{{operationIdOriginal}}}.errors); }
+  get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(state => state.{{{entityName}}}.{{{operationIdOriginal}}}.hasError); }
+  {{{operationIdOriginal}}}(data: {{{operationIdOriginal}}}Request){
+    this.store.dispatch(Actions.{{{operationIdOriginal}}}Execute(data));
+  }
+  {{/operation}}
+  {{/operations}}
+
+}

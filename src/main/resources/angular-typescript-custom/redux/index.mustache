@@ -1,0 +1,4 @@
+export {ReduxCoreModule as {{apiName}}ReduxModule} from './redux/core.module';
+{{#allEntities}}
+export Actions as {{oEntity}}Actions from './redux/{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}/{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}.actions';
+{{/allEntities}}

@@ -1,0 +1,9 @@
+{{#models}}
+{{#model}}
+{{#tsImports}}
+import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{apiName}}/models/{{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}}';
+{{/tsImports}}
+
+{{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{#isAlias}}{{>modelAlias}}{{/isAlias}}{{^isAlias}}{{#taggedUnions}}{{>modelTaggedUnion}}{{/taggedUnions}}{{^taggedUnions}}{{#oneOf}}{{#-first}}{{>modelOneOf}}{{/-first}}{{/oneOf}}{{^oneOf}}{{>modelGeneric}}{{/oneOf}}{{/taggedUnions}}{{/isAlias}}{{/isEnum}}
+{{/model}}
+{{/models}}

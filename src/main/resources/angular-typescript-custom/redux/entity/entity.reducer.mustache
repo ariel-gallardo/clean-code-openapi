@@ -1,0 +1,36 @@
+import { createReducer, on } from '@ngrx/store';
+import Actions from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.actions';
+import State from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.state';
+import {Pagination} from '@api/{{apiName}}/models/common/pagination.model';
+
+{{#imports}}
+import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{apiName}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
+{{/imports}}
+
+const initialState = {
+    {{#operations}}
+    {{#operation}}
+    {{{operationIdOriginal}}}: {
+        hasError: false,
+        isLoaded: false,
+        errors: Array.of<ValidationError>(),
+        data: {{#isArray}} {
+            currentPage: 0,
+            totalPages: 0,
+            pageSize: 0,
+            totalCount: 0
+        } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/isArray}}{{^isArray}}undefined{{/isArray}}
+    },
+    {{/operation}}
+    {{/operations}}
+} as State;
+
+export default createReducer<State>(
+  initialState,
+  {{#operations}}
+  {{#operation}}
+    on(Actions.{{{operationIdOriginal}}}SetData, state => ({ ...state, {{{operationIdOriginal}}}: {data: state.{{{operationIdOriginal}}}.data, isLoaded: true, hasError: false, errors: [] }})),
+    on(Actions.{{{operationIdOriginal}}}SetError, state => ({ ...state, {{{operationIdOriginal}}}: {errors: state.{{{operationIdOriginal}}}.errors, isLoaded: false, hasError: true, data: {{#isArray}} {currentPage: 0,totalPages: 0, pageSize: 0, totalCount: 0} as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/isArray}}{{^isArray}}undefined{{/isArray}} }})),
+  {{/operation}}
+  {{/operations}}
+);

@@ -1,0 +1,15 @@
+{{#imports}}
+import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{apiName}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
+{{/imports}}
+import {Response} from '@api/{{apiName}}/models/common/response.model';
+import {StateDetail} from '@api/{{apiName}}/models/common/state-detail.model';
+import {Pagination} from '@api/{{apiName}}/models/common/pagination.model';
+
+export default interface State
+{
+    {{#operations}}
+    {{#operation}}
+        {{{operationIdOriginal}}}: StateDetail<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}>
+    {{/operation}}
+    {{/operations}}
+}

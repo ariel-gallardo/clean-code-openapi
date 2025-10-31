@@ -1,0 +1,9 @@
+import {ValidationError} from '../validation-error.model';
+
+export interface StateDetail<T>
+{
+    data: T
+    isLoaded: boolean
+    hasError: boolean
+    errors: ValidationError[]
+}

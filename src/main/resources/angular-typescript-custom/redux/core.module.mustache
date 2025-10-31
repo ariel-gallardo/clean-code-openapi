@@ -1,0 +1,21 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+{{#allEntities}}
+import {{oEntity}}Module from './{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}/{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}.module';
+{{/allEntities}}
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
+    {{#allEntities}}
+    {{oEntity}}Module,
+    {{/allEntities}}
+  ],
+})
+export class ReduxCoreModule {
+    
+}

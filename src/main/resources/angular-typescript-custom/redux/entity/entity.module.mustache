@@ -1,0 +1,18 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import Reducer from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.reducer';
+import Effects from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.effects';
+
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    StoreModule.forFeature('{{#lambda.RemoveDTO}}{{entityName}}{{/lambda.RemoveDTO}}', Reducer),
+    EffectsModule.forFeature([Effects])
+  ],
+})
+export class {{#lambda.RemoveDTO}}{{entityName}}{{/lambda.RemoveDTO}}ReduxModule {
+
+}
