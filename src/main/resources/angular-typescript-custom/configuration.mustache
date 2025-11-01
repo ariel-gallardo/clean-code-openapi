@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams, HttpParameterCodec } from '@angular/common/http';
 import { Param } from './param';
 
-export interface {{configurationParametersInterfaceName}} {
+export interface IConfigurationParameters {
     /**
      *  @deprecated Since 5.0. Use credentials instead
      */
@@ -34,7 +34,7 @@ export interface {{configurationParametersInterfaceName}} {
     credentials?: {[ key: string ]: string | (() => string | undefined)};
 }
 
-export class {{configurationClassName}} {
+export class ServiceConfiguration {
     /**
      *  @deprecated Since 5.0. Use credentials instead
      */
@@ -66,7 +66,7 @@ export class {{configurationClassName}} {
      */
     credentials: {[ key: string ]: string | (() => string | undefined)};
 
-constructor({ accessToken, apiKeys, basePath, credentials, encodeParam, encoder, password, username, withCredentials }: {{configurationParametersInterfaceName}} = {}) {
+constructor({ accessToken, apiKeys, basePath, credentials, encodeParam, encoder, password, username, withCredentials }: IConfigurationParameters = {}) {
         if (apiKeys) {
             this.apiKeys = apiKeys;
         }
@@ -133,7 +133,7 @@ constructor({ accessToken, apiKeys, basePath, credentials, encodeParam, encoder,
 
     /**
      * Select the correct content-type to use for a request.
-     * Uses {@link {{configurationClassName}}#isJsonMime} to determine the correct content-type.
+     * Uses {@link ServiceConfiguration#isJsonMime} to determine the correct content-type.
      * If no content type is found return the first found type if the contentTypes is not empty
      * @param contentTypes - the array of content types that are available for selection
      * @returns the selected content-type or <code>undefined</code> if no selection could be made.
@@ -152,7 +152,7 @@ constructor({ accessToken, apiKeys, basePath, credentials, encodeParam, encoder,
 
     /**
      * Select the correct accept content-type to use for a request.
-     * Uses {@link {{configurationClassName}}#isJsonMime} to determine the correct accept content-type.
+     * Uses {@link ServiceConfiguration#isJsonMime} to determine the correct accept content-type.
      * If no content type is found return the first found type if the contentTypes is not empty
      * @param accepts - the array of content types that are available for selection.
      * @returns the selected content-type or <code>undefined</code> if no selection could be made.

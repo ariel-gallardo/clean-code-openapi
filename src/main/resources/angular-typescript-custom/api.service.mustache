@@ -15,7 +15,7 @@ import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{
 import { {{{entityName}}}ReduxModule } from '@api/{{apiName}}/redux/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.module';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
-import { {{configurationClassName}} } from '../configuration';
+import { ServiceConfiguration } from '../configuration';
 import { BaseService } from './api.base.service';
 {{#withInterfaces}}
 import {

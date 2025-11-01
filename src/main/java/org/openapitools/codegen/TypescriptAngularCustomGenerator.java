@@ -146,6 +146,8 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     supportingFiles.add(new SupportingFile(reduxTemplatePath("core.module.mustache"), String.format("%s/%s",reduxFileFolder(),"core.module.ts")));
     supportingFiles.add(new SupportingFile("api.base.service.mustache", String.format("%s/%s", apiFileFolder(), "api.base.service.ts")));
     supportingFiles.add(new SupportingFile(reduxTemplatePath("index.mustache"), String.format("%s/%s",baseFileFolder(),"index.ts")));
+    supportingFiles.add(new SupportingFile("configuration.mustache", String.format("%s/%s",baseFileFolder(),"configuration.ts")));
+    supportingFiles.add(new SupportingFile("encoder.mustache", String.format("%s/%s",baseFileFolder(),"encoder.ts")));
   }
 
   private String reduxPackage(){
