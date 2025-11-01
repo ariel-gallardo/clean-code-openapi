@@ -26,12 +26,12 @@ export class {{entityName}}Actions {
   {{#lambda.Skip}}
   static {{operationIdOriginal}}SetData = createAction(
     '[{{entityName}}] {{operationIdOriginal}} SetData',
-    props<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}>()
+    props<{data: {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} }>()
   );
   {{/lambda.Skip}}
   static {{operationIdOriginal}}SetError = createAction(
   '[{{entityName}}] {{operationIdOriginal}} SetError',
-      props<ValidationError[]>()
+      props<{errors: ValidationError[]}>()
   );
   {{/operation}}
   {{/operations}}

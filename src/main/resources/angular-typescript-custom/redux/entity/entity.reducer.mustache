@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import Actions from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.actions';
+import { {{entityName}}Actions as Actions } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.actions';
 import State from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.state';
 import {Pagination} from '@api/{{apiName}}/models/common/pagination.model';
 
@@ -29,7 +29,8 @@ export default createReducer<State>(
   initialState,
   {{#operations}}
   {{#operation}}
-    on(Actions.{{{operationIdOriginal}}}SetData, state => ({ ...state, {{{operationIdOriginal}}}: {data: state.{{{operationIdOriginal}}}.data, isLoaded: true, hasError: false, errors: [] }})),
+    on(Actions.{{{operationIdOriginal}}}Init, state => ({hasError: false,isLoaded: false,errors: Array.of<ValidationError>(), data: {{#isArray}} {currentPage: 0,totalPages: 0,pageSize: 0,otalCount: 0} as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/isArray}}{{^isArray}}undefined{{/isArray}}})),
+    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, state => ({ ...state, {{{operationIdOriginal}}}: {data: state.{{{operationIdOriginal}}}.data, isLoaded: true, hasError: false, errors: [] }})),{{/lambda.Skip}}
     on(Actions.{{{operationIdOriginal}}}SetError, state => ({ ...state, {{{operationIdOriginal}}}: {errors: state.{{{operationIdOriginal}}}.errors, isLoaded: false, hasError: true, data: {{#isArray}} {currentPage: 0,totalPages: 0, pageSize: 0, totalCount: 0} as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/isArray}}{{^isArray}}undefined{{/isArray}} }})),
   {{/operation}}
   {{/operations}}

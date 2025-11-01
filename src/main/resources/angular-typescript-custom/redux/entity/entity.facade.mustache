@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import Actions from './actions';
+import { {{entityName}}Actions as Actions } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.actions';
 import {Pagination} from '../../models/common/pagination.model';
 import State from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.state';
 import { {{entityName}}ReduxModule } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.module';

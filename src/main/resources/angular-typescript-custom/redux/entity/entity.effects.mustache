@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
-import Api from '@api/Impecable/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service';
-import { {{entityName}}Actions } from './actions';
+import { {{entityName}}Service } from '@api/Impecable/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service';
+import { {{entityName}}Actions } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.actions';
 
 @Injectable(
     
@@ -10,8 +10,20 @@ import { {{entityName}}Actions } from './actions';
 export default class Effects {
   constructor(
     private actions$: Actions,
-    private api: Api
+    private api: {{{entityName}}}Service
   ) {}
+
+    Init$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType({{entityName}}Actions.Init),
+        mergeMap(() => [
+            {{#operations}}
+            {{#operation}}
+                {{entityName}}Actions.{{{operationIdOriginal}}}Init(),
+            {{/operation}}
+            {{/operations}}
+        ])
+    ));
 
     {{#operations}}
     {{#operation}}
@@ -20,9 +32,9 @@ export default class Effects {
         ofType({{entityName}}Actions.{{{operationIdOriginal}}}Execute),
         switchMap(params =>
             this.api.{{{operationIdOriginal}}}(params).pipe(
-                {{#lambda.Skip}}map(data => {{entityName}}Actions.{{{operationIdOriginal}}}SetData(data)),{{/lambda.Skip}}
-                catchError(error =>
-                    of({{entityName}}Actions.{{{operationIdOriginal}}}SetError(error))
+                {{#lambda.Skip}}map(data => {{entityName}}Actions.{{{operationIdOriginal}}}SetData({data})),{{/lambda.Skip}}
+                catchError(errors =>
+                    of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({errors}))
                 )
             )
         )
