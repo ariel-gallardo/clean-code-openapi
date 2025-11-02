@@ -32,13 +32,11 @@ export default class Effects {
         ofType({{entityName}}Actions.{{{operationIdOriginal}}}Execute),
         switchMap(params =>
             this.api.{{{operationIdOriginal}}}(params).pipe(
-                {{#lambda.Skip}}map(data => {{entityName}}Actions.{{{operationIdOriginal}}}SetData({data})),{{/lambda.Skip}}
-                catchError(errors =>
-                    of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({errors}))
-                )
-            )
-        )
-    ));
+                {{#lambda.Skip}}map(response => {{entityName}}Actions.{{{operationIdOriginal}}}SetData({data: response.data})),{{/lambda.Skip}}
+                {{#lambda.Add}}map(() => {{entityName}}Actions.{{{operationIdOriginal}}}Success()),{{/lambda.Add}}
+                catchError(errors => of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({errors})))
+        )))
+    );
     {{/operation}}
     {{/operations}}
 }

@@ -10,7 +10,7 @@ public class ResponseLambda implements Mustache.Lambda {
 
     @Override
     public void execute(Fragment frag, Writer out) throws IOException {
-        String input = frag.execute();
+        String input = frag.execute().replace("DTO", "");
         if(input.equals("BaseResponse")){
             out.write(input);
         }

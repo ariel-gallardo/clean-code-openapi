@@ -1,10 +1,12 @@
 package org.openapitools.codegen;
+import org.openapitools.codegen.lambdas.AddLambda;
 import org.openapitools.codegen.lambdas.CheckPaginationLambda;
 import org.openapitools.codegen.lambdas.KebabCustomLambda;
 import org.openapitools.codegen.lambdas.RemoveDTOLambda;
 import org.openapitools.codegen.lambdas.ResponseLambda;
 import org.openapitools.codegen.lambdas.ResultLambda;
 import org.openapitools.codegen.lambdas.SkipLambda;
+import org.openapitools.codegen.lambdas.StateDetailCheckLambda;
 import org.openapitools.codegen.model.*;
 import com.google.common.collect.ImmutableMap;
 import com.samskivert.mustache.Mustache.Lambda;
@@ -101,7 +103,9 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     .put("CheckPagination", new CheckPaginationLambda())
     .put("KebabCustom", new KebabCustomLambda())
     .put("Result", new ResultLambda())
-    .put("Skip", new SkipLambda());
+    .put("Skip", new SkipLambda())
+    .put("Add", new AddLambda())
+    .put("StateDetailCheck", new StateDetailCheckLambda());
   }
 
 
@@ -148,6 +152,7 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     supportingFiles.add(new SupportingFile(reduxTemplatePath("index.mustache"), String.format("%s/%s",baseFileFolder(),"index.ts")));
     supportingFiles.add(new SupportingFile("configuration.mustache", String.format("%s/%s",baseFileFolder(),"configuration.ts")));
     supportingFiles.add(new SupportingFile("encoder.mustache", String.format("%s/%s",baseFileFolder(),"encoder.ts")));
+    supportingFiles.add(new SupportingFile("param.mustache", String.format("%s/%s",baseFileFolder(),"param.ts")));
   }
 
   private String reduxPackage(){

@@ -6,13 +6,13 @@ import java.io.Writer;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template.Fragment;
 
-public class SkipLambda implements Mustache.Lambda {
+public class AddLambda implements Mustache.Lambda {
 
     @Override
     public void execute(Fragment frag, Writer out) throws IOException {
-        String input = frag.execute();
-        if(!input.contains("Delete") && !input.contains("as any"))
-            out.write(input);
+        String text = frag.execute();
+        if(text.contains("Delete"))
+            out.write(text);
     }
     
 }

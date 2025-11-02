@@ -1,16 +1,17 @@
 {{>licenseInfo}}
 import { HttpHeaders, HttpParams, HttpParameterCodec } from '@angular/common/http';
-import { CustomHttpParameterCodec } from './encoder';
-import { {{configurationClassName}} } from './configuration';
+import { CustomHttpParameterCodec } from '../encoder';
+import { ServiceConfiguration } from '../configuration';
+import { environment } from '@cfg/environment';
 
 export class BaseService {
-    protected basePath = '{{{basePath}}}';
+    protected basePath = environment.api{{#lambda.pascalcase}}{{apiName}}{{/lambda.pascalcase}};
     public defaultHeaders = new HttpHeaders();
-    public configuration: {{configurationClassName}};
+    public configuration: ServiceConfiguration;
     public encoder: HttpParameterCodec;
 
-    constructor(basePath?: string|string[], configuration?: {{configurationClassName}}) {
-        this.configuration = configuration || new {{configurationClassName}}();
+    constructor(basePath?: string|string[], configuration?: ServiceConfiguration) {
+        this.configuration = configuration || new ServiceConfiguration();
         if (typeof this.configuration.basePath !== 'string') {
             const firstBasePath = Array.isArray(basePath) ? basePath[0] : undefined;
             if (firstBasePath != undefined) {
