@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { HttpClientModule } from '@angular/common/http';
 {{#allEntities}}
 import { {{oEntity}}ReduxModule } from './{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}/{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}.module';
 {{/allEntities}}
 
 @NgModule({
   imports: [
-    BrowserModule,
+    CommonModule,
+    HttpClientModule,
     StoreModule.forRoot({}, {}),
     EffectsModule.forRoot([]),
     {{#allEntities}}

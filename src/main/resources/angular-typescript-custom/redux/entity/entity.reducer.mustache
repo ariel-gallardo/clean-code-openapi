@@ -1,4 +1,4 @@
-import { createReducer, on } from '@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
 import { {{entityName}}Actions as Actions } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.actions';
 import State from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.state';
 import {Pagination} from '@api/{{apiName}}/models/common/pagination.model';
@@ -20,7 +20,7 @@ const initialState = {
     {{/operations}}
 } as State;
 
-export default createReducer<State>(
+const reducer = createReducer<State>(
   initialState,
   {{#operations}}
   {{#operation}}
@@ -30,3 +30,10 @@ export default createReducer<State>(
   {{/operation}}
   {{/operations}}
 );
+
+export default function currentReducer(
+  state: State,
+  action: Action
+) {
+  return reducer(state, action);
+}

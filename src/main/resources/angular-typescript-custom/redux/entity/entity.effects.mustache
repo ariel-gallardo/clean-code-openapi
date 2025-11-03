@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
 import { {{entityName}}Service } from '@api/Impecable/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service';
@@ -7,11 +7,9 @@ import { {{entityName}}Actions } from './{{#lambda.KebabCustom}}{{{entityName}}}
 @Injectable(
     
 )
-export default class Effects {
-  constructor(
-    private actions$: Actions,
-    private api: {{{entityName}}}Service
-  ) {}
+export class {{entityName}}Effects {
+    private actions$ = inject(Actions);
+    private api = inject({{{entityName}}}Service);
 
     Init$ = createEffect(() =>
     this.actions$.pipe(

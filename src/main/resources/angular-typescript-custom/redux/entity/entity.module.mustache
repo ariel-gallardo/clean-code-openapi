@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import Reducer from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.reducer';
-import Effects from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.effects';
-
-
+import { {{entityName}}Effects } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.effects';
+import { {{{entityName}}}Service } from '@api/{{apiName}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service';
+import { {{entityName}}Facade } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.facade';
 @NgModule({
   imports: [
-    BrowserModule,
+    CommonModule,
     StoreModule.forFeature('{{#lambda.RemoveDTO}}{{entityName}}{{/lambda.RemoveDTO}}', Reducer),
-    EffectsModule.forFeature([Effects])
+    EffectsModule.forFeature([{{entityName}}Effects])
   ],
+  providers: [{{{entityName}}}Service, {{entityName}}Facade]
 })
 export class {{#lambda.RemoveDTO}}{{entityName}}{{/lambda.RemoveDTO}}ReduxModule {
 

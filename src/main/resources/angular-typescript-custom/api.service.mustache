@@ -46,9 +46,7 @@ export interface {{{operationIdOriginal}}}Request {
  * {{&description}}
  */
 {{/description}}
-@Injectable({
-  providedIn: {{{entityName}}}ReduxModule
-})
+@Injectable()
 {{#withInterfaces}}
 export class {{classname}}Service extends BaseService implements {{classname}}Interface {
 {{/withInterfaces}}
