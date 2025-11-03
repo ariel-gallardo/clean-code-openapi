@@ -6,6 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 {{#allEntities}}
 import { {{oEntity}}ReduxModule } from './{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}/{{#lambda.KebabCustom}}{{oEntity}}{{/lambda.KebabCustom}}.module';
 {{/allEntities}}
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '@cfg/environment';
 
 @NgModule({
   imports: [
@@ -13,6 +15,7 @@ import { {{oEntity}}ReduxModule } from './{{#lambda.KebabCustom}}{{oEntity}}{{/l
     HttpClientModule,
     StoreModule.forRoot({}, {}),
     EffectsModule.forRoot([]),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
     {{#allEntities}}
     {{oEntity}}ReduxModule,
     {{/allEntities}}
