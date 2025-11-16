@@ -5,7 +5,7 @@ import { ServiceConfiguration } from '../configuration';
 import { environment } from '@cfg/environment';
 
 export class BaseService {
-    protected basePath = environment.api{{#lambda.pascalcase}}{{apiName}}{{/lambda.pascalcase}};
+    protected basePath = environment.api;
     public defaultHeaders = new HttpHeaders();
     public configuration: ServiceConfiguration;
     public encoder: HttpParameterCodec;

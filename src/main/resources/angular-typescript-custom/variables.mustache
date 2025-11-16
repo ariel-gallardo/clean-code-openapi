@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { environment } from '@cfg/environment';
 
-export const BASE_PATH = environment.api{{#lambda.pascalcase}}{{apiName}}{{/lambda.pascalcase}};
+export const BASE_PATH = `${environment.api}/{{apiName}}`;
 export const COLLECTION_FORMATS = {
     'csv': ',',
     'tsv': '   ',

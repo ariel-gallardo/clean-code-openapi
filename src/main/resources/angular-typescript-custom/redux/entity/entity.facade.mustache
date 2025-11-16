@@ -8,14 +8,14 @@ import State from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCusto
 
 
 {{#exports}}
-import { {{{exportName}}} } from '@api/{{apiName}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}'; 
+import { {{{exportName}}} } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}'; 
 {{/exports}}
 {{#imports}}
-import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{apiName}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model'; 
+import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model'; 
 {{/imports}}
 {{#operations}}
 {{#operation}}
-import { {{{operationIdOriginal}}}Request } from '@api/{{apiName}}/services/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.service'; 
+import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.service'; 
 {{/operation}}
 {{/operations}}
 

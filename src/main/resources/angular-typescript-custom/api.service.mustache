@@ -7,12 +7,12 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import {Response} from '@api/{{apiName}}/models/common/response.model';
-import {Pagination} from '@api/{{apiName}}/models/common/pagination.model';
+import {Response} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/response.model';
+import {Pagination} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/pagination.model';
 {{#imports}}
-import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{apiName}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
+import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
 {{/imports}}
-import { {{{entityName}}}ReduxModule } from '@api/{{apiName}}/redux/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.module';
+import { {{{entityName}}}ReduxModule } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/redux/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.module';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { ServiceConfiguration } from '../configuration';

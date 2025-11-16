@@ -4,12 +4,12 @@ import {Response} from '../../models/common/response.model';
 
 {{#operations}}
 {{#operation}}
-import { {{operationIdOriginal}}Request } from '@api/{{apiName}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service'; 
+import { {{operationIdOriginal}}Request } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service'; 
 {{/operation}}
 {{/operations}}
 
 {{#imports}}
-import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{apiName}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
+import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
 {{/imports}}
 
 export class {{entityName}}Actions {

@@ -1,9 +1,9 @@
 {{#imports}}
-import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{apiName}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
+import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
 {{/imports}}
-import {Response} from '@api/{{apiName}}/models/common/response.model';
-import {StateDetail, StateDetailBase} from '@api/{{apiName}}/models/common/state-detail.model';
-import {Pagination} from '@api/{{apiName}}/models/common/pagination.model';
+import {Response} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/response.model';
+import {StateDetail, StateDetailBase} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/state-detail.model';
+import {Pagination} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/pagination.model';
 
 export default interface State
 {

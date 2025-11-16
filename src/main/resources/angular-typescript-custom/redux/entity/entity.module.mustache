@@ -4,7 +4,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import Reducer from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.reducer';
 import { {{entityName}}Effects } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.effects';
-import { {{{entityName}}}Service } from '@api/{{apiName}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service';
+import { {{{entityName}}}Service } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service';
 import { {{entityName}}Facade } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.facade';
 @NgModule({
   imports: [
