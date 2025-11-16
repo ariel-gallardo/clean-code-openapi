@@ -22,6 +22,10 @@ import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{
 @Injectable()
 export class {{entityName}}Facade {
   constructor(private store: Store<{ {{{entityName}}}: State }>) {}
+  
+  Init(){
+    this.store.dispatch(Actions.Init());
+  }
 
   {{#operations}}
   {{#operation}}
