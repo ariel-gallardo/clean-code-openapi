@@ -25,8 +25,8 @@ const reducer = createReducer<State>(
   {{#operations}}
   {{#operation}}
     on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{hasError: false,isLoaded: false,errors: Array.of<ValidationError>(){{#lambda.Skip}}, data: {{#isArray}} {currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0} as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/isArray}}{{^isArray}}{} as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}{{/isArray}}{{/lambda.Skip}}}})),
-    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, state => ({ ...state, {{{operationIdOriginal}}}: {data: state.{{{operationIdOriginal}}}.data, isLoaded: true, hasError: false, errors: [] }})),{{/lambda.Skip}}
-    on(Actions.{{{operationIdOriginal}}}SetError, state => ({ ...state, {{{operationIdOriginal}}}: {errors: state.{{{operationIdOriginal}}}.errors, isLoaded: false, hasError: true{{#lambda.Skip}}, data: {{#isArray}} {currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0} as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/isArray}}{{^isArray}}{} as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}{{/isArray}}{{/lambda.Skip}} }})),
+    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, (state,{data}) => ({ ...state, {{{operationIdOriginal}}}: {data: data, isLoaded: true, hasError: false, errors: [] }})),{{/lambda.Skip}}
+    on(Actions.{{{operationIdOriginal}}}SetError, (state,{errors}) => ({ ...state, {{{operationIdOriginal}}}: {errors: errors, isLoaded: false, hasError: true{{#lambda.Skip}}, data: {{#isArray}} {currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0} as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/isArray}}{{^isArray}}{} as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}{{/isArray}}{{/lambda.Skip}} }})),
   {{/operation}}
   {{/operations}}
 );
