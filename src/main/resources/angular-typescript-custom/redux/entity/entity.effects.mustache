@@ -29,8 +29,9 @@ export class {{entityName}}Effects {
     this.actions$.pipe(
         ofType({{entityName}}Actions.{{{operationIdOriginal}}}Execute),
         switchMap(params =>
-            this.api.{{{operationIdOriginal}}}(params).pipe(
-                {{#lambda.Skip}}map(response => {{entityName}}Actions.{{{operationIdOriginal}}}SetData({data: response.data})),{{/lambda.Skip}}
+            this.api.{{{operationIdOriginal}}}(params, 'response').pipe(
+                //@ts-ignore
+                {{#lambda.Skip}}map(response => {{entityName}}Actions.{{{operationIdOriginal}}}SetData({data: {{#isArray}}{items: response.body!.data, currentPage: Number(response.headers.get('X-Current-Page')),totalPages: Number(response.headers.get('X-Total-Pages')),pageSize: Number(response.headers.get('X-Page-Size')),totalCount: Number(response.headers.get('X-Total-Count'))}{{/isArray}}{{^isArray}}response.body!.data{{/isArray}}  })),{{/lambda.Skip}}
                 {{#lambda.Add}}map(() => {{entityName}}Actions.{{{operationIdOriginal}}}Success()),{{/lambda.Add}}
                 catchError(errors => of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({errors})))
         )))
