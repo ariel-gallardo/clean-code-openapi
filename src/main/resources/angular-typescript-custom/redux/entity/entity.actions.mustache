@@ -23,6 +23,8 @@ export class {{entityName}}Actions {
     '[{{entityName}}] {{operationIdOriginal}} Execute'
   );
   {{#lambda.Skip}} static {{operationIdOriginal}}SetData = createAction('[{{entityName}}] {{operationIdOriginal}} SetData', props<{data: {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} }>()); {{/lambda.Skip}}
+  static {{operationIdOriginal}}RequestUpdate = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdate', props<{ request: {{operationIdOriginal}}Request }>());
+  static {{operationIdOriginal}}RequestUpdateSuccess = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateSuccess', props<{key:string,value:any}>());
 
   static {{operationIdOriginal}}Success = createAction(
     '[{{entityName}}] {{operationIdOriginal}} Success',
@@ -30,7 +32,7 @@ export class {{entityName}}Actions {
 
   static {{operationIdOriginal}}SetError = createAction(
   '[{{entityName}}] {{operationIdOriginal}} SetError',
-  props<{form: FormGroup<NullableFormControl<{{operationIdOriginal}}Request>>}>
+  props<{errors: Array<ValidationError>}>
   );
   {{/operation}}
   {{/operations}}

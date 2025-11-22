@@ -11,13 +11,6 @@ import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{
 {{/operation}}
 {{/operations}}
 
-import { FormGroup } from '@angular/forms';
-import { NullableFormControl } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/nullable-form-control.model';
-
-function createFormInitialState<T extends Record<string, any>>() {
-  return new FormGroup<NullableFormControl<T>>({} as T);
-}
-
 const initialState = {
     {{#operations}}
     {{#operation}}
@@ -26,7 +19,13 @@ const initialState = {
         isLoaded: false,
         errors: Array.of<ValidationError>(),
         {{#lambda.Skip}}data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}},{{/lambda.Skip}}
-        form: createFormInitialState<{{operationIdOriginal}}Request>()
+        request: {
+          {{#allParams.0}}
+          {{#allParams}}
+            {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}}: {{#lambda.DefaultValue}}{{{dataType}}}{{/lambda.DefaultValue}},
+          {{/allParams}}
+          {{/allParams.0}}
+        } as {{{operationIdOriginal}}}Request,
     },
     {{/operation}}
     {{/operations}}
@@ -37,13 +36,15 @@ const reducer = createReducer<State>(
   {{#operations}}
   {{#operation}}
     // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{hasError: false,isLoaded: false{{#lambda.Skip}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}}}})),
+    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{hasError: false, errors: Array.of<ValidationError>(),  isLoaded: false{{#lambda.Skip}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}}}})),
     {{#lambda.Skip}}// @ts-ignore{{/lambda.Skip}}
-    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, (state,{data}) => ({ ...state, {{{operationIdOriginal}}}: {data: data, isLoaded: true, hasError: false }})),{{/lambda.Skip}}
+    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, (state,{data}) => ({ ...state, {{{operationIdOriginal}}}: {data: data, isLoaded: true, hasError: false, errors: Array.of<ValidationError>() }})),{{/lambda.Skip}}
     // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}SetError, (state,{form}) => ({ ...state, {{{operationIdOriginal}}}: {isLoaded: false, hasError: true{{#lambda.Skip}},form: form, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}} }})),
+    on(Actions.{{{operationIdOriginal}}}SetError, (state,{errors}) => ({ ...state, {{{operationIdOriginal}}}: {isLoaded: false, hasError: true{{#lambda.Skip}},errors: errors, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}} }})),
     // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}Success, (state) => ({ ...state, {{{operationIdOriginal}}}: {data: state?.{{{operationIdOriginal}}}?.data, isLoaded: true, hasError: false }})),
+    on(Actions.{{{operationIdOriginal}}}Success, (state) => ({ ...state, {{{operationIdOriginal}}}: {data: state?.{{{operationIdOriginal}}}?.data, isLoaded: true, hasError: false, errors: Array.of<ValidationError>() }})),
+    // @ts-ignore
+    on(Actions.{{{operationIdOriginal}}}RequestUpdateSuccess, (state,{ key, value }) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}} ,request: {...state.{{{operationIdOriginal}}}.request, [key]:value} }})),
   {{/operation}}
   {{/operations}}
 );

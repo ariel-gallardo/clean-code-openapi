@@ -4,9 +4,10 @@ export const selectState = createFeatureSelector<State>('{{entityName}}');
 
 {{#operations}}
 {{#operation}}
-export const select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Form = createSelector(selectState,s => s.{{{operationIdOriginal}}}.form);
+export const select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request = createSelector(selectState,s => s.{{{operationIdOriginal}}}.request);
 export const select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Loaded = createSelector(selectState,s => s.{{{operationIdOriginal}}}.isLoaded);
 export const select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}HasError = createSelector(selectState,s => s.{{{operationIdOriginal}}}.hasError);
+export const select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Errors = createSelector(selectState,s => s.{{{operationIdOriginal}}}.errors);
 {{#lambda.Skip}}export const select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Data = createSelector(selectState,s => s.{{{operationIdOriginal}}}.data);{{/lambda.Skip}}
 {{/operation}}
 {{/operations}}

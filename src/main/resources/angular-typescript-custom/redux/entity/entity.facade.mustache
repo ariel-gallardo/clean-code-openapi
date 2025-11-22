@@ -21,9 +21,10 @@ import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{
 {{/operations}}
 {{#operations}}
 {{#operation}}
-import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Form } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
+import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Request } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
 {{#lambda.Skip}}import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Data } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';{{/lambda.Skip}}
 import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}HasError } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
+import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Errors } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
 import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Loaded } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
 {{/operation}}
 {{/operations}}
@@ -41,9 +42,13 @@ export class {{entityName}}Facade {
   get {{{operationIdOriginal}}}IsLoaded$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Loaded); }
   {{#lambda.Skip}}get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Data); }{{/lambda.Skip}}
   get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}HasError); }
-  get {{{operationIdOriginal}}}Form$(): Observable<FormGroup<NullableFormControl<{{{operationIdOriginal}}}Request>>> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Form); }
+  get {{{operationIdOriginal}}}Errors$(): Observable<Array<ValidationError>> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Errors); }
+  get {{{operationIdOriginal}}}Request$(): Observable<{{{operationIdOriginal}}}Request> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request); }
   {{{operationIdOriginal}}}(){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}Execute());
+  }
+  {{{operationIdOriginal}}}RequestUpdate(request: {{{operationIdOriginal}}}Request){
+    this.store.dispatch(Actions.{{{operationIdOriginal}}}RequestUpdate({request}));
   }
   {{{operationIdOriginal}}}Init(){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}Init());

@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, EMPTY, map, mergeMap, of, switchMap } from 'rxjs';
+import { catchError, EMPTY, map, mergeMap, of, switchMap, withLatestFrom, pairwise, filter, debounceTime } from 'rxjs';
 import { {{entityName}}Service } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service';
 import { {{entityName}}Actions } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.actions';
 {{#operations}}
 {{#operation}}
-import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Form } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
+import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Request } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
 {{/operation}}
 {{/operations}}
 {{#operations}}
@@ -14,17 +14,9 @@ import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{
 {{/operation}}
 {{/operations}}
 import { Store } from '@ngrx/store';
-import { withLatestFrom } from 'rxjs';
 import { ValidationErrors } from '@angular/forms';
 import { ValidationError } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/validation-error.model';
 import { HttpErrorResponse } from '@angular/common/http';
-
-const toValidationErrors = (errors: ValidationError[]): ValidationErrors => {
-  return errors.reduce((acc, err) => {
-    acc[err.property] = err.message;
-    return acc;
-  }, {} as ValidationErrors);
-};
 
 @Injectable(
     
@@ -48,12 +40,28 @@ export class {{entityName}}Effects {
 
     {{#operations}}
     {{#operation}}
+    {{{operationIdOriginal}}}UpdateRequest$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType({{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdate),
+        debounceTime(1500),
+        map(action => action.request),
+        pairwise<{{{operationIdOriginal}}}Request>(),
+        map(([prev, curr]) => {
+        const key = (Object.keys(curr) as (keyof {{{operationIdOriginal}}}Request)[])
+            .find(k => prev[k] !== curr[k]);
+            return key ? [key, curr[key]] : [null, null];
+        }),
+        filter((pair): pair is [keyof {{{operationIdOriginal}}}Request, any] => pair[0] !== null),
+        map(([key,value]) =>
+            {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateSuccess({ key,value })
+        )
+    ));
     {{{operationIdOriginal}}}Execute$ = createEffect(() =>
     this.actions$.pipe(
         ofType({{entityName}}Actions.{{{operationIdOriginal}}}Execute),
-        withLatestFrom(this.store.select(select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Form)),
-        switchMap(([action, form]) =>
-            this.api.{{{operationIdOriginal}}}(form.value as {{operationIdOriginal}}Request, 'response').pipe(
+        withLatestFrom(this.store.select(select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Request)),
+        switchMap(([action, request]) =>
+            this.api.{{{operationIdOriginal}}}(request as {{operationIdOriginal}}Request, 'response').pipe(
                 //@ts-ignore
                 {{#lambda.Skip}}map(response => {{entityName}}Actions.{{{operationIdOriginal}}}SetData({data: {{#isArray}}{items: response.body!.data, currentPage: Number(response.headers.get('X-Current-Page')),totalPages: Number(response.headers.get('X-Total-Pages')),pageSize: Number(response.headers.get('X-Page-Size')),totalCount: Number(response.headers.get('X-Total-Count'))}{{/isArray}}{{^isArray}}response.body!.data{{/isArray}}  })),{{/lambda.Skip}}
                 {{#lambda.Add}}map(() => {{entityName}}Actions.{{{operationIdOriginal}}}Success()),{{/lambda.Add}}
@@ -62,9 +70,8 @@ export class {{entityName}}Effects {
                     if(newErr.status == 400){
                         if(newErr.error){
                             const newErrors = newErr.error as ValidationError[];
-                            form.setErrors(toValidationErrors(newErrors));
-                            //@ts-ignore
-                            return of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({form}))
+                            // @ts-ignore
+                            return of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({errors: newErrors}))
                         }
                     }
                     return EMPTY;

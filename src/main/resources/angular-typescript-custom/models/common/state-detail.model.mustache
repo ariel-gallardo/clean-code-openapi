@@ -11,5 +11,6 @@ export interface StateDetailBase<IRequest>
 {
     isLoaded: boolean
     hasError: boolean
-    form: FormGroup<NullableFormControl<IRequest>>
+    errors: Array<ValidationError>
+    request: IRequest
 }
