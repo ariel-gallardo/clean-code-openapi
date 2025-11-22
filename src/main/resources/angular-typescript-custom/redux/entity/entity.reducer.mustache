@@ -11,12 +11,11 @@ import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{
 {{/operation}}
 {{/operations}}
 
-import { inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { NullableFormControl } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/nullable-form-control.model';
 
 function createFormInitialState<T extends Record<string, any>>() {
-  const fb = inject(FormBuilder);
-  return fb.group<T>({} as T);
+  return new FormGroup<NullableFormControl<T>>({} as T);
 }
 
 const initialState = {
