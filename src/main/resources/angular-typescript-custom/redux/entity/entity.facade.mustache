@@ -45,6 +45,9 @@ export class {{entityName}}Facade {
   {{{operationIdOriginal}}}(){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}Execute());
   }
+  {{{operationIdOriginal}}}Init(){
+    this.store.dispatch(Actions.{{{operationIdOriginal}}}Init());
+  }
   {{/operation}}
   {{/operations}}
 
