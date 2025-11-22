@@ -13,7 +13,11 @@ import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{
 
 import { inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-const fb = inject(FormBuilder);
+
+function createFormInitialState<T extends Record<string, any>>() {
+  const fb = inject(FormBuilder);
+  return fb.group<T>({} as T);
+}
 
 const initialState = {
     {{#operations}}
@@ -23,7 +27,7 @@ const initialState = {
         isLoaded: false,
         errors: Array.of<ValidationError>(),
         {{#lambda.Skip}}data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}},{{/lambda.Skip}}
-        form: fb.group<{{operationIdOriginal}}Request>({})
+        form: createFormInitialState<{{operationIdOriginal}}Request>()
     },
     {{/operation}}
     {{/operations}}
