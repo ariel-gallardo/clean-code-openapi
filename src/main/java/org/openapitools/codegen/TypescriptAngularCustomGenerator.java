@@ -6,7 +6,7 @@ import org.openapitools.codegen.lambdas.RemoveDTOLambda;
 import org.openapitools.codegen.lambdas.ResponseLambda;
 import org.openapitools.codegen.lambdas.ResultLambda;
 import org.openapitools.codegen.lambdas.SkipLambda;
-import org.openapitools.codegen.lambdas.StateDetailCheckLambda;
+import org.openapitools.codegen.lambdas.StateDetailBaseLambda;
 import org.openapitools.codegen.model.*;
 import com.google.common.collect.ImmutableMap;
 import com.samskivert.mustache.Mustache.Lambda;
@@ -86,7 +86,8 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
         change2 = true;
         allExports.add(entityMap2);
       }*/
-      co.operationIdOriginal = co.nickname.replace(String.format("api%s", co.baseName), "");
+      String apiName = additionalProperties.get("apiName").toString().toLowerCase();
+      co.operationIdOriginal = co.nickname.replace(co.baseName, "").replace(apiName, "");
     }
 
     if(change) additionalProperties.put("allEntities", allEntities);
@@ -105,7 +106,7 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     .put("Result", new ResultLambda())
     .put("Skip", new SkipLambda())
     .put("Add", new AddLambda())
-    .put("StateDetailCheck", new StateDetailCheckLambda());
+    .put("StateDetailBase", new StateDetailBaseLambda());
   }
 
 
@@ -143,6 +144,7 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     modelPackage = String.format("api.%s.models",getApiName().toLowerCase());
     additionalProperties.put("useSingleRequestParameter", true);
     additionalProperties.put("isProvidedInNone", true);
+    supportingFiles.add(new SupportingFile(commonTemplateModelsPath("nullable-form-control.model.mustache"), String.format("%s/%s",modelFileFolder().replace("models",""),commonTemplateModelsPath("nullable-form-control.model.ts"))));
     supportingFiles.add(new SupportingFile(commonTemplateModelsPath("state-detail.model.mustache"), String.format("%s/%s",modelFileFolder().replace("models",""),commonTemplateModelsPath("state-detail.model.ts"))));
     supportingFiles.add(new SupportingFile(commonTemplateModelsPath("pagination.model.mustache"), String.format("%s/%s",modelFileFolder().replace("models",""),commonTemplateModelsPath("pagination.model.ts"))));
     supportingFiles.add(new SupportingFile(commonTemplateModelsPath("response.model.mustache"), String.format("%s/%s",modelFileFolder().replace("models",""),commonTemplateModelsPath("response.model.ts"))));
@@ -174,6 +176,7 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     apiTemplateFiles.put("/redux/entity/entity.reducer.mustache", ".reducer.ts");
     apiTemplateFiles.put("/redux/entity/entity.module.mustache", ".module.ts");
     apiTemplateFiles.put("/redux/entity/entity.state.mustache", ".state.ts");
+    apiTemplateFiles.put("/redux/entity/entity.selector.mustache", ".selector.ts");
     apiTemplateFiles.put("/redux/entity/entity.actions.mustache", ".actions.ts");
     apiTemplateFiles.put("/redux/entity/entity.effects.mustache", ".effects.ts");
     apiTemplateFiles.put("/redux/entity/entity.facade.mustache", ".facade.ts");

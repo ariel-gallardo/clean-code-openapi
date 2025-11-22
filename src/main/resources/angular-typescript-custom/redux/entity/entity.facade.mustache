@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { {{entityName}}Actions as Actions } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.actions';
 import {Pagination} from '../../models/common/pagination.model';
 import State from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.state';
-
+import {NullableFormControl} from '../../models/common/nullable-form-control.model';
+import { FormGroup } from '@angular/forms';
 
 {{#exports}}
 import { {{{exportName}}} } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}'; 
@@ -16,6 +17,14 @@ import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{
 {{#operations}}
 {{#operation}}
 import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.service'; 
+{{/operation}}
+{{/operations}}
+{{#operations}}
+{{#operation}}
+import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Form } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
+{{#lambda.Skip}}import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Data } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';{{/lambda.Skip}}
+import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}HasError } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
+import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Loaded } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
 {{/operation}}
 {{/operations}}
 
@@ -29,12 +38,12 @@ export class {{entityName}}Facade {
 
   {{#operations}}
   {{#operation}}
-  get {{{operationIdOriginal}}}IsLoaded$(): Observable<boolean> { return this.store.select(state => state.{{{entityName}}}.{{{operationIdOriginal}}}.isLoaded); }
-  {{#lambda.Skip}}get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(state => state.{{{entityName}}}.{{{operationIdOriginal}}}.data); }{{/lambda.Skip}}
-  get {{{operationIdOriginal}}}Error$(): Observable<ValidationError[]> { return this.store.select(state => state.{{{entityName}}}.{{{operationIdOriginal}}}.errors); }
-  get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(state => state.{{{entityName}}}.{{{operationIdOriginal}}}.hasError); }
-  {{{operationIdOriginal}}}(data: {{{operationIdOriginal}}}Request){
-    this.store.dispatch(Actions.{{{operationIdOriginal}}}Execute(data));
+  get {{{operationIdOriginal}}}IsLoaded$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Loaded); }
+  {{#lambda.Skip}}get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Data); }{{/lambda.Skip}}
+  get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}HasError); }
+  get {{{operationIdOriginal}}}Form$(): Observable<FormGroup<NullableFormControl<{{{operationIdOriginal}}}Request>>> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Form); }
+  {{{operationIdOriginal}}}(){
+    this.store.dispatch(Actions.{{{operationIdOriginal}}}Execute());
   }
   {{/operation}}
   {{/operations}}

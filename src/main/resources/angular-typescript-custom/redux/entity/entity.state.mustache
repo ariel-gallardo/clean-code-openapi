@@ -5,11 +5,17 @@ import {Response} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCu
 import {StateDetail, StateDetailBase} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/state-detail.model';
 import {Pagination} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/pagination.model';
 
+{{#operations}}
+{{#operation}}
+import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.service'; 
+{{/operation}}
+{{/operations}}
+
 export default interface State
 {
     {{#operations}}
     {{#operation}}
-        {{{operationIdOriginal}}}: {{#lambda.StateDetailCheck}}StateDetail<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}>{{/lambda.StateDetailCheck}}
+        {{{operationIdOriginal}}}: {{#lambda.StateDetailBase}}StateDetail<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}},{{operationIdOriginal}}Request>{{/lambda.StateDetailBase}}
     {{/operation}}
     {{/operations}}
 }

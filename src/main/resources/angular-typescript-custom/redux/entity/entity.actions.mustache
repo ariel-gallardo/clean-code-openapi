@@ -1,16 +1,16 @@
 import {createAction, props} from '@ngrx/store';
 import {Pagination} from '../../models/common/pagination.model';
 import {Response} from '../../models/common/response.model'; 
-
-{{#operations}}
-{{#operation}}
-import { {{operationIdOriginal}}Request } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service'; 
-{{/operation}}
-{{/operations}}
-
+import {NullableFormControl} from '../../models/common/nullable-form-control.model';
+import { FormGroup } from '@angular/forms';
 {{#imports}}
 import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.model';
 {{/imports}}
+{{#operations}}
+{{#operation}}
+import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.service'; 
+{{/operation}}
+{{/operations}}
 
 export class {{entityName}}Actions {
 
@@ -20,15 +20,9 @@ export class {{entityName}}Actions {
 
   static {{operationIdOriginal}}Init = createAction('[{{entityName}}] {{operationIdOriginal}}Init');
   static {{operationIdOriginal}}Execute = createAction(
-    '[{{entityName}}] {{operationIdOriginal}} Execute',
-    props<{{operationIdOriginal}}Request>()
+    '[{{entityName}}] {{operationIdOriginal}} Execute'
   );
-  {{#lambda.Skip}}
-  static {{operationIdOriginal}}SetData = createAction(
-    '[{{entityName}}] {{operationIdOriginal}} SetData',
-    props<{data: {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} }>()
-  );
-  {{/lambda.Skip}}
+  {{#lambda.Skip}} static {{operationIdOriginal}}SetData = createAction('[{{entityName}}] {{operationIdOriginal}} SetData', props<{data: {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} }>()); {{/lambda.Skip}}
 
   static {{operationIdOriginal}}Success = createAction(
     '[{{entityName}}] {{operationIdOriginal}} Success',
@@ -36,7 +30,7 @@ export class {{entityName}}Actions {
 
   static {{operationIdOriginal}}SetError = createAction(
   '[{{entityName}}] {{operationIdOriginal}} SetError',
-      props<{errors: ValidationError[]}>()
+  props<{form: FormGroup<NullableFormControl<{{operationIdOriginal}}Request>>}>
   );
   {{/operation}}
   {{/operations}}

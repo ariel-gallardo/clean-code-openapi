@@ -7,15 +7,15 @@ import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template.Fragment;
 
 
-public class StateDetailCheckLambda implements Mustache.Lambda {
+public class StateDetailBaseLambda implements Mustache.Lambda {
     
     @Override
     public void execute(Fragment frag, Writer out) throws IOException {
         String input = frag.execute();
-        if(!input.contains("any"))
+        if(!input.startsWith("StateDetail<any,"))
             out.write(input);
         else
-            out.write("StateDetailBase");
+            out.write(input.replace("StateDetail", "StateDetailBase").replace("any,", ""));
     }
     
 }
