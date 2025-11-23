@@ -40,10 +40,56 @@ export class {{entityName}}Effects {
 
     {{#operations}}
     {{#operation}}
+    {{#lambda.UsePage}}
+    {{=<% %>=}}
+    <% returnType %>
+    <% operationIdOriginal %>ChangePage$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(<% entityName %>Actions.<% operationIdOriginal %>ChangePage),
+            map(({ event }) => ({
+                pageSize: event.pageSize,
+                currentPage: event.pageIndex + 1
+            })),
+            map(request =>
+                //@ts-ignore
+                <% entityName %>Actions.<% operationIdOriginal %>RequestUpdate({ request })
+            )
+        )
+    );
+    <%={{ }}=%>
+    {{/lambda.UsePage}}
     {{{operationIdOriginal}}}UpdateRequest$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType({{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdate),
+            debounceTime(300),
+            map(action => action.request),
+            pairwise<{{{operationIdOriginal}}}Request>(),
+            map(([prev, curr]) => {
+                const changedKeys = (Object.keys(curr) as (keyof {{{operationIdOriginal}}}Request)[])
+                    .filter(k => prev[k] !== curr[k]);
+
+                if (changedKeys.length === 0) {
+                    return [prev, false] as const;
+                }
+
+                const updated = { ...prev };
+                changedKeys.forEach(k => {
+                    //@ts-ignore
+                    updated[k] = curr[k];
+                });
+
+                return [updated, true] as const;
+            }),
+            filter(([_, status]) => status),
+            map(([request]) =>
+                {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateSuccess({ request })
+            )
+        )
+    );
+    {{{operationIdOriginal}}}UpdateOneRequest$ = createEffect(() =>
     this.actions$.pipe(
-        ofType({{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdate),
-        debounceTime(1500),
+        ofType({{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateOne),
+        debounceTime(300),
         map(action => action.request),
         pairwise<{{{operationIdOriginal}}}Request>(),
         map(([prev, curr]) => {
@@ -53,7 +99,7 @@ export class {{entityName}}Effects {
         }),
         filter((pair): pair is [keyof {{{operationIdOriginal}}}Request, any] => pair[0] !== null),
         map(([key,value]) =>
-            {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateSuccess({ key,value })
+            {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateOneSuccess({ key,value })
         )
     ));
     {{{operationIdOriginal}}}Execute$ = createEffect(() =>

@@ -28,6 +28,7 @@ import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase
 import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Loaded } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
 {{/operation}}
 {{/operations}}
+import { PageEvent } from '@angular/material/paginator';
 
 @Injectable()
 export class {{entityName}}Facade {
@@ -39,18 +40,29 @@ export class {{entityName}}Facade {
 
   {{#operations}}
   {{#operation}}
-  get {{{operationIdOriginal}}}IsLoaded$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Loaded); }
-  {{#lambda.Skip}}get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Data); }{{/lambda.Skip}}
-  get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}HasError); }
-  get {{{operationIdOriginal}}}Errors$(): Observable<Array<ValidationError>> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Errors); }
-  get {{{operationIdOriginal}}}Request$(): Observable<{{{operationIdOriginal}}}Request> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request); }
-  {{{operationIdOriginal}}}(){
+  public get {{{operationIdOriginal}}}IsLoaded$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Loaded); }
+  {{#lambda.Skip}}public get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Data); }{{/lambda.Skip}}
+  public get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}HasError); }
+  public get {{{operationIdOriginal}}}Errors$(): Observable<Array<ValidationError>> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Errors); }
+  public get {{{operationIdOriginal}}}Request$(): Observable<{{{operationIdOriginal}}}Request> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request); }
+  public {{{operationIdOriginal}}}(){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}Execute());
   }
-  {{{operationIdOriginal}}}RequestUpdate(request: {{{operationIdOriginal}}}Request){
+  public {{{operationIdOriginal}}}RequestUpdate(request: {{{operationIdOriginal}}}Request){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}RequestUpdate({request}));
   }
-  {{{operationIdOriginal}}}Init(){
+  public {{{operationIdOriginal}}}RequestUpdateOne(request: {{{operationIdOriginal}}}Request){
+    this.store.dispatch(Actions.{{{operationIdOriginal}}}RequestUpdateOne({request}));
+  }
+  {{#lambda.UsePage}}
+  {{=<% %>=}}
+  <% returnType %>
+  public <% operationIdOriginal %>ChangePage(event: PageEvent) {
+    this.store.dispatch(Actions.<% operationIdOriginal %>ChangePage({ event }));
+  }
+  <%={{ }}=%>
+  {{/lambda.UsePage}}
+  public {{{operationIdOriginal}}}Init(){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}Init());
   }
   {{/operation}}

@@ -8,6 +8,7 @@ import org.openapitools.codegen.lambdas.ResponseLambda;
 import org.openapitools.codegen.lambdas.ResultLambda;
 import org.openapitools.codegen.lambdas.SkipLambda;
 import org.openapitools.codegen.lambdas.StateDetailBaseLambda;
+import org.openapitools.codegen.lambdas.UsePageLambda;
 import org.openapitools.codegen.model.*;
 import com.google.common.collect.ImmutableMap;
 import com.samskivert.mustache.Mustache.Lambda;
@@ -108,8 +109,8 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     .put("Skip", new SkipLambda())
     .put("Add", new AddLambda())
     .put("StateDetailBase", new StateDetailBaseLambda())
-    .put("DefaultValue", new DefaultValueLambda());
-    
+    .put("DefaultValue", new DefaultValueLambda())
+    .put("UsePage", new UsePageLambda());
   }
 
 

@@ -13,7 +13,7 @@ public class DefaultValueLambda implements Mustache.Lambda {
        String input = frag.execute();
        if(input.contains("array") || input.contains("[]")) out.write("[]");
        else if(input.equals("number")) out.write("undefined");
-       else if(input.equals("string")) out.write("''");
+       else if(input.equals("string")) out.write("undefined");
        else out.write("{}");
     }
     

@@ -11,6 +11,7 @@ import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{
 import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.service'; 
 {{/operation}}
 {{/operations}}
+import { PageEvent } from '@angular/material/paginator';
 
 export class {{entityName}}Actions {
 
@@ -25,7 +26,9 @@ export class {{entityName}}Actions {
   );
   {{#lambda.Skip}} static {{operationIdOriginal}}SetData = createAction('[{{entityName}}] {{operationIdOriginal}} SetData', props<{data: {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} }>()); {{/lambda.Skip}}
   static {{operationIdOriginal}}RequestUpdate = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdate', props<{ request: {{operationIdOriginal}}Request }>());
-  static {{operationIdOriginal}}RequestUpdateSuccess = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateSuccess', props<{key:string,value:any}>());
+  static {{operationIdOriginal}}RequestUpdateOne = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateOne', props<{ request: {{operationIdOriginal}}Request }>());
+  static {{operationIdOriginal}}RequestUpdateOneSuccess = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateOneSuccess', props<{key:string,value:any}>());
+  static {{operationIdOriginal}}RequestUpdateSuccess = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateSuccess', props<{request: {{operationIdOriginal}}Request }>());
 
   static {{operationIdOriginal}}Success = createAction(
     '[{{entityName}}] {{operationIdOriginal}} Success',
@@ -35,6 +38,12 @@ export class {{entityName}}Actions {
   '[{{entityName}}] {{operationIdOriginal}} SetError',
   props<{errors: Array<ValidationError>}>
   );
+  {{#lambda.UsePage}}
+  {{=<% %>=}}
+    <% returnType %> 
+    static <% operationIdOriginal %>ChangePage = createAction('[<% entityName %>] <% operationIdOriginal %> ChangePage', props<{event: PageEvent }>());
+  <%={{ }}=%>
+  {{/lambda.UsePage}}
   {{/operation}}
   {{/operations}}
 }
