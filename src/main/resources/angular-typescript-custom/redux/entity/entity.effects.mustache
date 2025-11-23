@@ -6,6 +6,7 @@ import { {{entityName}}Actions } from './{{#lambda.KebabCustom}}{{{entityName}}}
 {{#operations}}
 {{#operation}}
 import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Request } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
+import { select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}FirstInit } from './{{#lambda.KebabCustom}}{{entityName}}{{/lambda.KebabCustom}}.selector';
 {{/operation}}
 {{/operations}}
 {{#operations}}
@@ -59,71 +60,123 @@ export class {{entityName}}Effects {
     <%={{ }}=%>
     {{/lambda.UsePage}}
     {{{operationIdOriginal}}}UpdateRequest$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType({{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdate),
-            debounceTime(300),
-            map(action => action.request),
-            pairwise<{{{operationIdOriginal}}}Request>(),
-            map(([prev, curr]) => {
-                const changedKeys = (Object.keys(curr) as (keyof {{{operationIdOriginal}}}Request)[])
-                    .filter(k => prev[k] !== curr[k]);
+    this.actions$.pipe(
+        ofType({{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdate),
+        debounceTime(300),
+        withLatestFrom(
+            this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}FirstInit),
+            this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request)
+        ),
+        map(([action, firstInit, prevRequest]) => ({
+            request: action.request,
+            skip: firstInit,
+            prevRequest
+        })),
+        map(({request, skip, prevRequest}) => {
+        if (skip) {
+            return [prevRequest, false] as const;
+        }
 
-                if (changedKeys.length === 0) {
-                    return [prev, false] as const;
-                }
+        const changedKeys = (Object.keys(request) as (keyof {{{operationIdOriginal}}}Request)[])
+            .filter(k => prevRequest[k] !== request[k]);
 
-                const updated = { ...prev };
-                changedKeys.forEach(k => {
-                    //@ts-ignore
-                    updated[k] = curr[k];
-                });
+        if (changedKeys.length === 0) {
+            return [prevRequest, false] as const;
+        }
 
-                return [updated, true] as const;
-            }),
-            filter(([_, status]) => status),
-            map(([request]) =>
-                {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateSuccess({ request })
-            )
+        const updated = { ...prevRequest };
+        changedKeys.forEach(k => {
+            //@ts-ignore
+            updated[k] = request[k];
+        });
+        return [updated, true] as const;
+        }),
+        filter(([_, status]) => status),
+        map(([request]) => 
+        {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateSuccess({ request })
         )
+    )
     );
     {{{operationIdOriginal}}}UpdateOneRequest$ = createEffect(() =>
-    this.actions$.pipe(
-        ofType({{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateOne),
-        debounceTime(300),
-        map(action => action.request),
-        pairwise<{{{operationIdOriginal}}}Request>(),
-        map(([prev, curr]) => {
-        const key = (Object.keys(curr) as (keyof {{{operationIdOriginal}}}Request)[])
-            .find(k => prev[k] !== curr[k]);
-            return key ? [key, curr[key]] : [null, null];
-        }),
-        filter((pair): pair is [keyof {{{operationIdOriginal}}}Request, any] => pair[0] !== null),
-        map(([key,value]) =>
-            {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateOneSuccess({ key,value })
+        this.actions$.pipe(
+            ofType({{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateOne),
+            debounceTime(300),
+            withLatestFrom(
+                this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}FirstInit),
+                this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request)
+            ),
+            map(([action, firstInit, prevRequest]) => ({
+                request: action.request,
+                skip: firstInit,
+                prevRequest
+            })),
+            map(({request,skip,prevRequest}) => {
+            if (skip) {
+                return [null, null] as const;
+            }
+            const key = (Object.keys(request) as (keyof {{{operationIdOriginal}}}Request)[])
+                .find(k => prevRequest[k] !== request[k]);
+
+            return key ? [key, request[key]] : [null, null] as const;
+            }),
+            filter((pair): pair is [keyof {{{operationIdOriginal}}}Request, any] => pair[0] !== null),
+            map(([key, value]) =>
+                {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateOneSuccess({ key, value })
+            )
         )
-    ));
-    {{{operationIdOriginal}}}Execute$ = createEffect(() =>
-    this.actions$.pipe(
-        ofType({{entityName}}Actions.{{{operationIdOriginal}}}Execute),
-        withLatestFrom(this.store.select(select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Request)),
-        switchMap(([action, request]) =>
-            this.api.{{{operationIdOriginal}}}(request as {{operationIdOriginal}}Request, 'response').pipe(
-                //@ts-ignore
-                {{#lambda.Skip}}map(response => {{entityName}}Actions.{{{operationIdOriginal}}}SetData({data: {{#isArray}}{items: response.body!.data, currentPage: Number(response.headers.get('X-Current-Page')),totalPages: Number(response.headers.get('X-Total-Pages')),pageSize: Number(response.headers.get('X-Page-Size')),totalCount: Number(response.headers.get('X-Total-Count'))}{{/isArray}}{{^isArray}}response.body!.data{{/isArray}}  })),{{/lambda.Skip}}
-                {{#lambda.Add}}map(() => {{entityName}}Actions.{{{operationIdOriginal}}}Success()),{{/lambda.Add}}
-                catchError((err, caught) => {
-                    const newErr = err as HttpErrorResponse;
-                    if(newErr.status == 400){
-                        if(newErr.error){
-                            const newErrors = newErr.error as ValidationError[];
-                            // @ts-ignore
-                            return of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({errors: newErrors}))
-                        }
-                    }{{#lambda.Skip}}else if(newErr.status == 404){return of(ClientesActions.{{{operationIdOriginal}}}DataInit()); }{{/lambda.Skip}}
-                    return EMPTY;
+        );
+        {{{operationIdOriginal}}}Execute$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType({{entityName}}Actions.{{{operationIdOriginal}}}Execute),
+            withLatestFrom(
+                this.store.select(select{{#lambda.pascalcase}}{{operationIdOriginal}}{{/lambda.pascalcase}}Request),
+                this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}FirstInit)
+            ),
+            switchMap(([action, request, firstInit]) => {
+            if (firstInit) {
+                return EMPTY; 
+            }
+
+            return this.api.{{{operationIdOriginal}}}(request as {{operationIdOriginal}}Request, 'response').pipe(
+                {{#lambda.Skip}}
+                map(response =>
+                {{entityName}}Actions.{{{operationIdOriginal}}}SetData({
+                    data: {{#isArray}}
+                    {
+                        //@ts-ignore
+                        items: response.body!.data,
+                        currentPage: Number(response.headers.get('X-Current-Page')),
+                        totalPages: Number(response.headers.get('X-Total-Pages')),
+                        pageSize: Number(response.headers.get('X-Page-Size')),
+                        totalCount: Number(response.headers.get('X-Total-Count'))
+                    }
+                    {{/isArray}}
+                    {{^isArray}}
+                    response.body!.data
+                    {{/isArray}}
                 })
-        )))
-    );
+                ),
+                {{/lambda.Skip}}
+                {{#lambda.Add}}map(() => {{entityName}}Actions.{{{operationIdOriginal}}}Success()),{{/lambda.Add}}
+                catchError((err) => {
+                const newErr = err as HttpErrorResponse;
+                if (newErr.status === 400 && newErr.error) {
+                    const newErrors = newErr.error as ValidationError[];
+                    //@ts-ignore
+                    return of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({ errors: newErrors }));
+                }
+                {{#lambda.Skip}}
+                else if (newErr.status === 404) {
+                    return of({{entityName}}Actions.{{{operationIdOriginal}}}DataInit());
+                }
+                {{/lambda.Skip}}
+                return EMPTY;
+                })
+            );
+            })
+        )
+        );
+
     {{/operation}}
     {{/operations}}
 }

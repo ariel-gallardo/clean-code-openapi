@@ -13,4 +13,5 @@ export interface StateDetailBase<IRequest>
     hasError: boolean
     errors: Array<ValidationError>
     request: IRequest
+    firstInit: boolean
 }
