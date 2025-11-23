@@ -6,6 +6,7 @@ import org.openapitools.codegen.lambdas.KebabCustomLambda;
 import org.openapitools.codegen.lambdas.RemoveDTOLambda;
 import org.openapitools.codegen.lambdas.ResponseLambda;
 import org.openapitools.codegen.lambdas.ResultLambda;
+import org.openapitools.codegen.lambdas.ShowMessageLambda;
 import org.openapitools.codegen.lambdas.SkipLambda;
 import org.openapitools.codegen.lambdas.StateDetailBaseLambda;
 import org.openapitools.codegen.lambdas.UsePageLambda;
@@ -110,7 +111,8 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     .put("Add", new AddLambda())
     .put("StateDetailBase", new StateDetailBaseLambda())
     .put("DefaultValue", new DefaultValueLambda())
-    .put("UsePage", new UsePageLambda());
+    .put("UsePage", new UsePageLambda())
+    .put("ShowMessage", new ShowMessageLambda());
   }
 
 

@@ -6,13 +6,16 @@ import Reducer from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCus
 import { {{entityName}}Effects } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.effects';
 import { {{{entityName}}}Service } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.service';
 import { {{entityName}}Facade } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.facade';
+import {SnackbarModule} from '@features/snackbar/snackbar-module';
+import {SnackbarService} from '@features/snackbar/snackbar-service';
 @NgModule({
   imports: [
     CommonModule,
     StoreModule.forFeature('{{#lambda.RemoveDTO}}{{entityName}}{{/lambda.RemoveDTO}}', Reducer),
-    EffectsModule.forFeature([{{entityName}}Effects])
+    EffectsModule.forFeature([{{entityName}}Effects]),
+    SnackbarModule
   ],
-  providers: [{{{entityName}}}Service, {{entityName}}Facade]
+  providers: [{{{entityName}}}Service, {{entityName}}Facade, SnackbarService]
 })
 export class {{#lambda.RemoveDTO}}{{entityName}}{{/lambda.RemoveDTO}}ReduxModule {
 

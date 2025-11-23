@@ -18,6 +18,7 @@ import { Store } from '@ngrx/store';
 import { ValidationErrors } from '@angular/forms';
 import { ValidationError } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/validation-error.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import {SnackbarService} from '@features/snackbar/snackbar-service'; 
 
 @Injectable(
     
@@ -26,6 +27,7 @@ export class {{entityName}}Effects {
     private actions$ = inject(Actions);
     private api = inject({{{entityName}}}Service);
     private store = inject(Store);
+    private snackbarService = inject(SnackbarService);
 
     Init$ = createEffect(() =>
     this.actions$.pipe(
@@ -139,23 +141,24 @@ export class {{entityName}}Effects {
 
             return this.api.{{{operationIdOriginal}}}(request as {{operationIdOriginal}}Request, 'response').pipe(
                 {{#lambda.Skip}}
-                map(response =>
-                {{entityName}}Actions.{{{operationIdOriginal}}}SetData({
-                    data: {{#isArray}}
-                    {
-                        //@ts-ignore
-                        items: response.body!.data,
-                        currentPage: Number(response.headers.get('X-Current-Page')),
-                        totalPages: Number(response.headers.get('X-Total-Pages')),
-                        pageSize: Number(response.headers.get('X-Page-Size')),
-                        totalCount: Number(response.headers.get('X-Total-Count'))
-                    }
-                    {{/isArray}}
-                    {{^isArray}}
-                    response.body!.data
-                    {{/isArray}}
-                })
-                ),
+                map(response =>{
+                    {{#lambda.ShowMessage}} {{{operationIdOriginal}}} this.snackbarService.show(response.body!.message, response.body!.statusCode);{{/lambda.ShowMessage}}
+                    return {{entityName}}Actions.{{{operationIdOriginal}}}SetData({
+                        data: {{#isArray}}
+                        {
+                            //@ts-ignore
+                            items: response.body!.data,
+                            currentPage: Number(response.headers.get('X-Current-Page')),
+                            totalPages: Number(response.headers.get('X-Total-Pages')),
+                            pageSize: Number(response.headers.get('X-Page-Size')),
+                            totalCount: Number(response.headers.get('X-Total-Count'))
+                        }
+                        {{/isArray}}
+                        {{^isArray}}
+                        response.body!.data
+                        {{/isArray}}
+                    })
+                }),
                 {{/lambda.Skip}}
                 {{#lambda.Add}}map(() => {{entityName}}Actions.{{{operationIdOriginal}}}Success()),{{/lambda.Add}}
                 catchError((err) => {
