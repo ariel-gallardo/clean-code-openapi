@@ -20,6 +20,7 @@ export class {{entityName}}Actions {
   {{#operation}}
 
   static {{operationIdOriginal}}Init = createAction('[{{entityName}}] {{operationIdOriginal}}Init');
+  static {{operationIdOriginal}}Destroy = createAction('[{{entityName}}] {{operationIdOriginal}}Destroy');
   static {{operationIdOriginal}}DataInit = createAction('[{{entityName}}] {{operationIdOriginal}}DataInit');
   static {{operationIdOriginal}}Execute = createAction(
     '[{{entityName}}] {{operationIdOriginal}} Execute'
