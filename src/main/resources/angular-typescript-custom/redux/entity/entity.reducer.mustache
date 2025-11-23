@@ -36,15 +36,16 @@ const reducer = createReducer<State>(
   {{#operations}}
   {{#operation}}
     // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{hasError: false, errors: Array.of<ValidationError>(),  isLoaded: false{{#lambda.Skip}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}}}})),
+    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, hasError: false, errors: Array.of<ValidationError>(),  isLoaded: false{{#lambda.Skip}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}}}})),
+    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}DataInit, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}}})),{{/lambda.Skip}}
     {{#lambda.Skip}}// @ts-ignore{{/lambda.Skip}}
-    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, (state,{data}) => ({ ...state, {{{operationIdOriginal}}}: {data: data, isLoaded: true, hasError: false, errors: Array.of<ValidationError>() }})),{{/lambda.Skip}}
+    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, (state,{data}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, data: data, isLoaded: true, hasError: false, errors: Array.of<ValidationError>() }})),{{/lambda.Skip}}
     // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}SetError, (state,{errors}) => ({ ...state, {{{operationIdOriginal}}}: {isLoaded: false, hasError: true{{#lambda.Skip}},errors: errors, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}} }})),
+    on(Actions.{{{operationIdOriginal}}}SetError, (state,{errors}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, isLoaded: false, hasError: true{{#lambda.Skip}},errors: errors, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}} }})),
     // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}Success, (state) => ({ ...state, {{{operationIdOriginal}}}: {data: state?.{{{operationIdOriginal}}}?.data, isLoaded: true, hasError: false, errors: Array.of<ValidationError>() }})),
+    on(Actions.{{{operationIdOriginal}}}Success, (state) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, data: state?.{{{operationIdOriginal}}}?.data, isLoaded: true, hasError: false, errors: Array.of<ValidationError>() }})),
     // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}RequestUpdateSuccess, (state,{ key, value }) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}} ,request: {...state.{{{operationIdOriginal}}}.request, [key]:value} }})),
+    on(Actions.{{{operationIdOriginal}}}RequestUpdateSuccess, (state,{ key, value }) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, ...state.{{{operationIdOriginal}}} ,request: {...state.{{{operationIdOriginal}}}.request, [key]:value} }})),
   {{/operation}}
   {{/operations}}
 );

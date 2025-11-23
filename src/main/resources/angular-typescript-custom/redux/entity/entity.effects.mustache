@@ -73,7 +73,7 @@ export class {{entityName}}Effects {
                             // @ts-ignore
                             return of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({errors: newErrors}))
                         }
-                    }
+                    }{{#lambda.Skip}}else if(newErr.status == 404){return of(ClientesActions.{{{operationIdOriginal}}}DataInit()); }{{/lambda.Skip}}
                     return EMPTY;
                 })
         )))

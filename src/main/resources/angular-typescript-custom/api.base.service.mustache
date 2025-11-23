@@ -39,7 +39,7 @@ export class BaseService {
     }
 
     protected addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string, isDeep: boolean = false): HttpParams {
-        if (value === null || value === undefined) {
+        if (value === null || value === undefined || value === '') {
             return httpParams;
         }
         if (typeof value === 'object') {
