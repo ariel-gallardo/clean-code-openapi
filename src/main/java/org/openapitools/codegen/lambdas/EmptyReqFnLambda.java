@@ -19,22 +19,27 @@ public class EmptyReqFnLambda implements Mustache.Lambda {
             String[] array = latest.split(",");
             if(array.length > 0){
                 ArrayList<String> list = new ArrayList<>(Arrays.asList(array));
-                list.removeIf(s -> s.contains("'string'") || s.contains("'number'") || s.contains("'enum'") || s.contains("'any'"));
+                list.removeIf(s -> s.contains("page'") || s.contains("pageSize'") || s.contains("orderBy'"));
                 for (int i = 0; i < list.size(); i++) {
                     String s = list.get(i);
                     if (s.matches(".*'.*'.*")) {
                         String content = s.replaceAll(".*('.*').*", "$1");
                         if(content.contains("[]")){
                             content = s.replace(content,"");
-                            content = String.format("(%s ? %s.length > 0 : false)", content,content);
+                            content = String.format("(%s ? %s.length > 0 : false)", content,content).replace("DTO", "");
                         }
                         else
-                            content = s.replace(content, ".isEmpty()");
-                        list.set(i, content.replace("DTO", ""));
+                        {
+                            if(content.contains("string") || content.contains("number") || content.contains("enum"))
+                                content = s.replace(content, "").replace("DTO", "");
+                            else
+                                content = s.replace(content, "?.IsEmpty()").replace("DTO", "");
+                        }
+                        list.set(i, content);
                     }
                 }
                 if(!list.isEmpty())
-                    out.write(String.format("\tpublic IsEmpty(){return (%s);}", String.join(" || ", list)));
+                    out.write(String.format("\tpublic IsEmpty(){return !(%s);}", String.join(" || ", list)));
             }
         } 
     }
