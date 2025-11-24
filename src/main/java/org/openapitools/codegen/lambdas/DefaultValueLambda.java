@@ -12,9 +12,11 @@ public class DefaultValueLambda implements Mustache.Lambda {
     public void execute(Fragment frag, Writer out) throws IOException {
        String input = frag.execute();
        if(input.contains("array") || input.contains("[]")) out.write("[]");
-       else if(input.equals("number")) out.write("undefined");
-       else if(input.equals("string")) out.write("undefined");
-       else out.write("{}");
+       else if(input.equals("number")) out.write("0");
+       else if(input.equals("string")) out.write("''");
+       else {
+        out.write("{}");
+       }
     }
     
 }

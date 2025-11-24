@@ -51,7 +51,7 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     OperationsMap results = super.postProcessOperationsWithModels(objs, allModels);
     OperationMap ops = results.getOperations();
     List<CodegenOperation> opList = ops.getOperation();
-
+    
     /*List<Map<String,Object>> allExports;
     if (!results.containsKey("allEntities")) {
         results.put("allEntities", new ArrayList<Map<String,Object>>());
@@ -63,17 +63,19 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
         additionalProperties.put("allEntities", new ArrayList<Map<String,Object>>());
     }
     allEntities = (List<Map<String,Object>>) additionalProperties.get("allEntities");
-
+    
    boolean change = false, change2 = false;
     for(CodegenOperation co : opList){
       Map<String,Object> entityMap = new HashMap<>();
       //Map<String,Object> entityMap2 = new HashMap<>();
-
+      
       entityMap.put("oEntity", co.baseName);
       //entityMap2.put("exportName", co.returnType);
       
       boolean exists = allEntities.stream().anyMatch(e -> e.get("oEntity").equals(co.baseName)),
       exists2 = false;
+
+      //Object[] params = co.allParams.toArray();
 
       /*if(co.returnType != null)
       exists2 = allExports.stream().anyMatch(e -> e.get("exportName").equals(co.returnType));*/
