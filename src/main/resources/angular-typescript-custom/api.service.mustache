@@ -32,7 +32,7 @@ import {
 {{#allParams.0}}
 export interface {{{operationIdOriginal}}}Request {
 {{#allParams}}
-    {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}}?: {{#lambda.RemoveDTO}}{{{dataType}}}{{/lambda.RemoveDTO}};
+    {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}}?: {{#lambda.RemoveDTO}}{{{dataType}}}{{/lambda.RemoveDTO}} | undefined | null;
 {{/allParams}}
 }
 

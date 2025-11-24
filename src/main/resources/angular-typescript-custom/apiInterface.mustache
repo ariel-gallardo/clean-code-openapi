@@ -17,7 +17,7 @@ import { {{configurationClassName}} }                                     from '
 {{#allParams.0}}
 export interface {{#prefixParameterInterfaces}}{{classname}}{{/prefixParameterInterfaces}}{{operationIdCamelCase}}RequestParams {
 {{#allParams}}
-    {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}}?: {{{dataType}}};
+    {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}}?: {{{dataType}}} | undefined | null;
 {{/allParams}}
 }
 
