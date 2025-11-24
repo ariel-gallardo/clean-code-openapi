@@ -1,4 +1,4 @@
-export interface {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}}{{#allParents}}{{#-first}} extends {{/-first}}{{{.}}}{{^-last}}, {{/-last}}{{/allParents}} { {{>modelGenericAdditionalProperties}}
+export class {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}}{{#allParents}}{{#-first}} extends {{/-first}}{{{.}}}{{^-last}}, {{/-last}}{{/allParents}} { {{>modelGenericAdditionalProperties}}
 {{#vars}}
     {{^modelPropertyNamingOriginal}}
     {{#isReadOnly}}readonly {{/isReadOnly}}{{{name}}}?: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}} | undefined | null;
@@ -7,4 +7,5 @@ export interface {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}}{{#allPa
     {{#isReadOnly}}readonly {{/isReadOnly}}{{#hasSanitizedName}}'{{{baseName}}}'{{/hasSanitizedName}}{{^hasSanitizedName}}{{{name}}}{{/hasSanitizedName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#isNullable}} | null{{/isNullable}};
     {{/modelPropertyNamingOriginal}}
 {{/vars}}
+{{#lambda.EmptyModelFn}}{{/lambda.EmptyModelFn}}
 }{{>modelGenericEnums}}

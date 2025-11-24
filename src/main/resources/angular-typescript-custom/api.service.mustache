@@ -25,21 +25,15 @@ import {
 {{/withInterfaces}}
 
 {{#operations}}
-
-{{^withInterfaces}}
-{{#useSingleRequestParameter}}
 {{#operation}}
-{{#allParams.0}}
-export interface {{{operationIdOriginal}}}Request {
+export class {{{operationIdOriginal}}}Request {
 {{#allParams}}
     {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}}?: {{#lambda.RemoveDTO}}{{{dataType}}}{{/lambda.RemoveDTO}} | undefined | null;
 {{/allParams}}
+{{#lambda.EmptyReqFn}}{{/lambda.EmptyReqFn}}
 }
-
-{{/allParams.0}}
 {{/operation}}
-{{/useSingleRequestParameter}}
-{{/withInterfaces}}
+
 
 {{#description}}
 /**

@@ -2,6 +2,8 @@ package org.openapitools.codegen;
 import org.openapitools.codegen.lambdas.AddLambda;
 import org.openapitools.codegen.lambdas.CheckPaginationLambda;
 import org.openapitools.codegen.lambdas.DefaultValueLambda;
+import org.openapitools.codegen.lambdas.EmptyModelFnLambda;
+import org.openapitools.codegen.lambdas.EmptyReqFnLambda;
 import org.openapitools.codegen.lambdas.KebabCustomLambda;
 import org.openapitools.codegen.lambdas.RemoveDTOLambda;
 import org.openapitools.codegen.lambdas.ResponseLambda;
@@ -114,7 +116,9 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     .put("StateDetailBase", new StateDetailBaseLambda())
     .put("DefaultValue", new DefaultValueLambda())
     .put("UsePage", new UsePageLambda())
-    .put("ShowMessage", new ShowMessageLambda());
+    .put("ShowMessage", new ShowMessageLambda())
+    .put("EmptyModelFn", new EmptyModelFnLambda())
+    .put("EmptyReqFn", new EmptyReqFnLambda());
   }
 
 
