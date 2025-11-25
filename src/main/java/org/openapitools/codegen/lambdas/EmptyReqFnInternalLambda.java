@@ -8,7 +8,7 @@ import java.util.Arrays;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template.Fragment;
 
-public class EmptyReqFnLambda implements Mustache.Lambda {
+public class EmptyReqFnInternalLambda implements Mustache.Lambda {
 
     @Override
     public void execute(Fragment frag, Writer out) throws IOException {
@@ -39,7 +39,7 @@ public class EmptyReqFnLambda implements Mustache.Lambda {
                     }
                 }
                 if(!list.isEmpty())
-                    out.write(String.format("\tpublic IsEmpty(){return !(Boolean(%s));}", String.join(" || ", list)));
+                    out.write(String.format("\tthis.IsEmpty = () => {return !(Boolean(%s));}", String.join(" || ", list)));
             }
         } 
     }

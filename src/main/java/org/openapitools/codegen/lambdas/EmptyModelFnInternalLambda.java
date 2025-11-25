@@ -6,13 +6,13 @@ import java.io.Writer;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template.Fragment;
 
-public class EmptyModelFnLambda implements Mustache.Lambda {
+public class EmptyModelFnInternalLambda implements Mustache.Lambda {
 
     @Override
     public void execute(Fragment frag, Writer out) throws IOException {
        String template = "{{#vars}}this.{{baseName}},{{/vars}}";
        String latest = Mustache.compiler().compile(template).execute(frag.context());
-       out.write(String.format("\tpublic IsEmpty(){return !(Boolean(%s));}", String.join(" || ", latest.split(","))));
+       out.write(String.format("\tthis.IsEmpty = () => {return !(Boolean(%s));}", String.join(" || ", latest.split(","))));
     }
     
 }

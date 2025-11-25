@@ -7,5 +7,12 @@ export class {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}}{{#allParent
     {{#isReadOnly}}readonly {{/isReadOnly}}{{#hasSanitizedName}}'{{{baseName}}}'{{/hasSanitizedName}}{{^hasSanitizedName}}{{{name}}}{{/hasSanitizedName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#isNullable}} | null{{/isNullable}};
     {{/modelPropertyNamingOriginal}}
 {{/vars}}
+constructor(init: Partial<{{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}}> = {}){
+    Object.assign(this, init);
+    {{#lambda.EmptyModelFnInternal}}{{/lambda.EmptyModelFnInternal}}
+    {{#vars}}
+    this.{{baseName}} = {{#lambda.DefaultValue}}{{{dataType}}}{{/lambda.DefaultValue}};
+    {{/vars}}
+}
 {{#lambda.EmptyModelFn}}{{/lambda.EmptyModelFn}}
 }{{>modelGenericEnums}}

@@ -2,9 +2,12 @@ package org.openapitools.codegen;
 import org.openapitools.codegen.lambdas.AddLambda;
 import org.openapitools.codegen.lambdas.CheckPaginationLambda;
 import org.openapitools.codegen.lambdas.DefaultValueLambda;
+import org.openapitools.codegen.lambdas.EmptyModelFnInternalLambda;
 import org.openapitools.codegen.lambdas.EmptyModelFnLambda;
+import org.openapitools.codegen.lambdas.EmptyReqFnInternalLambda;
 import org.openapitools.codegen.lambdas.EmptyReqFnLambda;
 import org.openapitools.codegen.lambdas.KebabCustomLambda;
+import org.openapitools.codegen.lambdas.OnlyFilterLambda;
 import org.openapitools.codegen.lambdas.RemoveDTOLambda;
 import org.openapitools.codegen.lambdas.ResponseLambda;
 import org.openapitools.codegen.lambdas.ResultLambda;
@@ -118,7 +121,11 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     .put("UsePage", new UsePageLambda())
     .put("ShowMessage", new ShowMessageLambda())
     .put("EmptyModelFn", new EmptyModelFnLambda())
-    .put("EmptyReqFn", new EmptyReqFnLambda());
+    .put("EmptyModelFnInternal", new EmptyModelFnInternalLambda())
+    .put("EmptyReqFn", new EmptyReqFnLambda())
+    .put("EmptyReqFnInternal", new EmptyReqFnInternalLambda())
+    .put("OnlyFilter", new OnlyFilterLambda());
+    
   }
 
 

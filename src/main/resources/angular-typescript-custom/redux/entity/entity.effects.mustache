@@ -94,9 +94,15 @@ export class {{entityName}}Effects {
         return [updated, true] as const;
         }),
         filter(([_, status]) => status),
-        map(([request]) => 
-        {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateSuccess({ request })
-        )
+        // @ts-ignore
+        map(([request]) => {
+            // @ts-ignore
+            const nRequest = new {{{operationIdOriginal}}}Request();
+            // @ts-ignore
+            Object.assign(nRequest,request);
+            // @ts-ignore
+            return {{entityName}}Actions.{{{operationIdOriginal}}}RequestUpdateSuccess({ request: nRequest });
+        })
     )
     );
     {{{operationIdOriginal}}}UpdateOneRequest$ = createEffect(() =>
@@ -135,7 +141,7 @@ export class {{entityName}}Effects {
                 this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}FirstInit)
             ),
             switchMap(([action, request, firstInit]) => {
-            if (firstInit) {
+            if (firstInit {{#lambda.OnlyFilter}} || request.IsEmpty(){{/lambda.OnlyFilter}}) {
                 return EMPTY; 
             }
 

@@ -20,20 +20,7 @@ const initialState = {
         isLoaded: false,
         errors: Array.of<ValidationError>(),
         {{#lambda.Skip}}data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}},{{/lambda.Skip}}
-        request: {
-          {{#allParams.0}}
-          {{#allParams}}
-            {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}}: {{^isModel}}{{#lambda.DefaultValue}}{{{dataType}}}{{/lambda.DefaultValue}},{{/isModel}}
-            {{#isModel}}
-            {
-              {{#vars}}
-                {{baseName}}: {{#lambda.DefaultValue}}{{{dataType}}}{{/lambda.DefaultValue}},
-              {{/vars}}
-            },
-            {{/isModel}}
-          {{/allParams}}
-          {{/allParams.0}}
-        } as {{{operationIdOriginal}}}Request,
+        request: new {{{operationIdOriginal}}}Request(),
     },
     {{/operation}}
     {{/operations}}
@@ -44,9 +31,9 @@ const reducer = createReducer<State>(
   {{#operations}}
   {{#operation}}
     // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, firstInit: false, hasError: false, errors: Array.of<ValidationError>(),  isLoaded: false{{#lambda.Skip}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}}, request: { {{#allParams.0}}{{#allParams}}{{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}}: {{^isModel}}{{#lambda.DefaultValue}}{{{dataType}}}{{/lambda.DefaultValue}},{{/isModel}}{{#isModel}}{ {{#vars}}{{baseName}}: {{#lambda.DefaultValue}}{{{dataType}}}{{/lambda.DefaultValue}},{{/vars}} },{{/isModel}}{{/allParams}}{{/allParams.0}} } as {{{operationIdOriginal}}}Request}})),
+    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, firstInit: false, hasError: false, errors: Array.of<ValidationError>(),  isLoaded: false{{#lambda.Skip}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}}, request: new {{{operationIdOriginal}}}Request()} })),
     // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}Destroy, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, firstInit: true, hasError: false, errors: Array.of<ValidationError>(),  isLoaded: false{{#lambda.Skip}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}}, request: undefined}})),
+    on(Actions.{{{operationIdOriginal}}}Destroy, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, firstInit: true, hasError: false, errors: Array.of<ValidationError>(),  isLoaded: false{{#lambda.Skip}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}}, request: null}})),
     // @ts-ignore
     {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}DataInit, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}}})),{{/lambda.Skip}}
     {{#lambda.Skip}}// @ts-ignore{{/lambda.Skip}}
