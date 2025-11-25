@@ -9,9 +9,9 @@ export interface StateDetail<IData,IRequest> extends StateDetailBase<IRequest>
 
 export interface StateDetailBase<IRequest>
 {
-    isLoaded: boolean
-    hasError: boolean
-    errors: Array<ValidationError>
-    request: IRequest
-    firstInit: boolean
+    isLoaded: boolean;
+    hasError: boolean;
+    errors: Array<ValidationError>;
+    request: IRequest | null;
+    firstInit: boolean;
 }

@@ -12,7 +12,7 @@ public class EmptyModelFnInternalLambda implements Mustache.Lambda {
     public void execute(Fragment frag, Writer out) throws IOException {
        String template = "{{#vars}}this.{{baseName}},{{/vars}}";
        String latest = Mustache.compiler().compile(template).execute(frag.context());
-       out.write(String.format("\tthis.IsEmpty = () => {return !(Boolean(%s));}", String.join(" || ", latest.split(","))));
+       out.write(String.format("IsEmpty: () => {return !(Boolean(%s));}", String.join(" || ", latest.split(","))));
     }
     
 }

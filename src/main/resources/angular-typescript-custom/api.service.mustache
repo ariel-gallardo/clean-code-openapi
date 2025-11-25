@@ -30,16 +30,21 @@ export class {{{operationIdOriginal}}}Request {
 {{#allParams}}
     {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}}?: {{#lambda.RemoveDTO}}{{{dataType}}}{{/lambda.RemoveDTO}} | undefined | null;
 {{/allParams}}
-{{#lambda.EmptyReqFn}}{{/lambda.EmptyReqFn}}
     constructor(init: Partial<{{{operationIdOriginal}}}Request> = {}){
-        Object.assign(this, init);
-        {{#lambda.EmptyReqFnInternal}}{{/lambda.EmptyReqFnInternal}}
          {{#allParams.0}}
           {{#allParams}}
             {{^isModel}} this.{{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}} = {{#lambda.DefaultValue}}{{{dataType}}}{{/lambda.DefaultValue}};{{/isModel}}
             {{#isModel}} this.{{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}} = new {{#lambda.RemoveDTO}}{{dataType}}{{/lambda.RemoveDTO}}(); {{/isModel}}
           {{/allParams}}
           {{/allParams.0}}
+        const keys = (Object.keys(init) as (keyof {{{operationIdOriginal}}}Request)[])
+        .filter(k => this[k] !== init[k]);
+        if(keys.length > 0){
+            keys.forEach(k => {
+                //@ts-ignore
+                this[k] = init[k];
+            });
+        }
     }   
 }
 {{/operation}}

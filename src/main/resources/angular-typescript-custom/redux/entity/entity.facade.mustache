@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, filter } from 'rxjs';
 
 import { {{entityName}}Actions as Actions } from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.actions';
 import {Pagination} from '../../models/common/pagination.model';
@@ -44,14 +44,14 @@ export class {{entityName}}Facade {
   {{#lambda.Skip}}public get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Data); }{{/lambda.Skip}}
   public get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}HasError); }
   public get {{{operationIdOriginal}}}Errors$(): Observable<Array<ValidationError>> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Errors); }
-  public get {{{operationIdOriginal}}}Request$(): Observable<{{{operationIdOriginal}}}Request> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request); }
+  public get {{{operationIdOriginal}}}Request$(): Observable<{{{operationIdOriginal}}}Request> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request).pipe(filter(x => x !== null)); }
   public {{{operationIdOriginal}}}(){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}Execute());
   }
-  public {{{operationIdOriginal}}}RequestUpdate(request: {{{operationIdOriginal}}}Request){
+  public {{{operationIdOriginal}}}RequestUpdate(request: Partial<{{{operationIdOriginal}}}Request>){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}RequestUpdate({request}));
   }
-  public {{{operationIdOriginal}}}RequestUpdateOne(request: {{{operationIdOriginal}}}Request){
+  public {{{operationIdOriginal}}}RequestUpdateOne(request: Partial<{{{operationIdOriginal}}}Request>){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}RequestUpdateOne({request}));
   }
   {{#lambda.UsePage}}

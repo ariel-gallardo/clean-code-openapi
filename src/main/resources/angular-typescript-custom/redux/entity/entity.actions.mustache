@@ -26,8 +26,8 @@ export class {{entityName}}Actions {
     '[{{entityName}}] {{operationIdOriginal}} Execute'
   );
   {{#lambda.Skip}} static {{operationIdOriginal}}SetData = createAction('[{{entityName}}] {{operationIdOriginal}} SetData', props<{data: {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} }>()); {{/lambda.Skip}}
-  static {{operationIdOriginal}}RequestUpdate = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdate', props<{ request: {{operationIdOriginal}}Request }>());
-  static {{operationIdOriginal}}RequestUpdateOne = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateOne', props<{ request: {{operationIdOriginal}}Request }>());
+  static {{operationIdOriginal}}RequestUpdate = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdate', props<{ request: Partial<{{operationIdOriginal}}Request> }>());
+  static {{operationIdOriginal}}RequestUpdateOne = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateOne', props<{ request: Partial<{{operationIdOriginal}}Request> }>());
   static {{operationIdOriginal}}RequestUpdateOneSuccess = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateOneSuccess', props<{key:string,value:any}>());
   static {{operationIdOriginal}}RequestUpdateSuccess = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateSuccess', props<{request: {{operationIdOriginal}}Request }>());
 

@@ -39,7 +39,7 @@ public class EmptyReqFnInternalLambda implements Mustache.Lambda {
                     }
                 }
                 if(!list.isEmpty())
-                    out.write(String.format("\tthis.IsEmpty = () => {return !(Boolean(%s));}", String.join(" || ", list)));
+                    out.write(String.format("IsEmpty: () => {return !(Boolean(%s));}", String.join(" || ", list)));
             }
         } 
     }

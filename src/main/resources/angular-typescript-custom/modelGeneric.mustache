@@ -8,11 +8,16 @@ export class {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}}{{#allParent
     {{/modelPropertyNamingOriginal}}
 {{/vars}}
 constructor(init: Partial<{{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}}> = {}){
-    Object.assign(this, init);
-    {{#lambda.EmptyModelFnInternal}}{{/lambda.EmptyModelFnInternal}}
     {{#vars}}
     this.{{baseName}} = {{#lambda.DefaultValue}}{{{dataType}}}{{/lambda.DefaultValue}};
     {{/vars}}
+    const keys = (Object.keys(init) as (keyof {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}})[])
+    .filter(k => this[k] !== init[k]);
+    if(keys.length > 0){
+        keys.forEach(k => {
+            //@ts-ignore
+            this[k] = init[k];
+        });
+    }
 }
-{{#lambda.EmptyModelFn}}{{/lambda.EmptyModelFn}}
 }{{>modelGenericEnums}}

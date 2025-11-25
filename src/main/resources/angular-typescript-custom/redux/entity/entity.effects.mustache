@@ -75,10 +75,10 @@ export class {{entityName}}Effects {
             prevRequest
         })),
         map(({request, skip, prevRequest}) => {
-        if (skip) {
+        if (skip || request == null) {
             return [prevRequest, false] as const;
         }
-
+        if(prevRequest == null) prevRequest = new {{{operationIdOriginal}}}Request();
         const changedKeys = (Object.keys(request) as (keyof {{{operationIdOriginal}}}Request)[])
             .filter(k => prevRequest[k] !== request[k]);
 
@@ -119,9 +119,10 @@ export class {{entityName}}Effects {
                 prevRequest
             })),
             map(({request,skip,prevRequest}) => {
-            if (skip) {
+            if (skip || request == null) {
                 return [null, null] as const;
             }
+            if(prevRequest == null) prevRequest = new {{{operationIdOriginal}}}Request();
             const key = (Object.keys(request) as (keyof {{{operationIdOriginal}}}Request)[])
                 .find(k => prevRequest[k] !== request[k]);
 
@@ -141,10 +142,10 @@ export class {{entityName}}Effects {
                 this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}FirstInit)
             ),
             switchMap(([action, request, firstInit]) => {
-            if (firstInit {{#lambda.OnlyFilter}} || request.IsEmpty(){{/lambda.OnlyFilter}}) {
+            if (firstInit {{#lambda.OnlyFilter}} || request == null {{/lambda.OnlyFilter}}) {
                 return EMPTY; 
             }
-
+            // @ts-ignore
             return this.api.{{{operationIdOriginal}}}(request as {{operationIdOriginal}}Request, 'response').pipe(
                 {{#lambda.Skip}}
                 map(response =>{
