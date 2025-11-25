@@ -11,7 +11,7 @@ export interface StateDetailBase<IRequest>
 {
     isLoaded: boolean;
     hasError: boolean;
-    errors: Array<Array<ValidationError>>;
+    errors: Array<ValidationError[]>;
     request: IRequest | null;
     firstInit: boolean;
 }

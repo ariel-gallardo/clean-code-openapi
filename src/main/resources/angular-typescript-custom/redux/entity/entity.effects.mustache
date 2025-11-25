@@ -174,7 +174,7 @@ export class {{entityName}}Effects {
                     const newErrors = newErr.error!.data as ValidationError[][];
                     {{#lambda.ShowMessage}} {{{operationIdOriginal}}} this.snackbarService.show(newErr.error!.message, newErr.error!.statusCode);{{/lambda.ShowMessage}}
                     //@ts-ignore
-                    return of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({ errors: newErrors }));
+                    return of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({ errors: newErrors!.data }));
                 }
                 {{#lambda.Skip}}
                 else if (newErr.status === 404) {

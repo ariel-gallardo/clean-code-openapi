@@ -43,7 +43,7 @@ export class {{entityName}}Facade {
   public get {{{operationIdOriginal}}}IsLoaded$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Loaded); }
   {{#lambda.Skip}}public get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Data); }{{/lambda.Skip}}
   public get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}HasError); }
-  public get {{{operationIdOriginal}}}Errors$(): Observable<Array<Array<ValidationError>>> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Errors); }
+  public get {{{operationIdOriginal}}}Errors$(): Observable<Array<ValidationError[]>> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Errors); }
   public get {{{operationIdOriginal}}}Request$(): Observable<{{{operationIdOriginal}}}Request> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request).pipe(filter(x => x !== null)); }
   public {{{operationIdOriginal}}}(){
     this.store.dispatch(Actions.{{{operationIdOriginal}}}Execute());
