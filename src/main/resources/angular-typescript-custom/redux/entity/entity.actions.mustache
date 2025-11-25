@@ -36,7 +36,7 @@ export class {{entityName}}Actions {
 
   static {{operationIdOriginal}}SetError = createAction(
   '[{{entityName}}] {{operationIdOriginal}} SetError',
-  props<{errors: Array<ValidationError>}>
+  props<{errors: Array<Array<ValidationError>>}>
   );
   {{#lambda.UsePage}}
   {{=<% %>=}}

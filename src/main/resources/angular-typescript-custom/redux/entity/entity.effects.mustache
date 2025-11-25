@@ -171,7 +171,8 @@ export class {{entityName}}Effects {
                 catchError((err) => {
                 const newErr = err as HttpErrorResponse;
                 if (newErr.status === 400 && newErr.error) {
-                    const newErrors = newErr.error as ValidationError[];
+                    const newErrors = newErr.error!.data as ValidationError[][];
+                    {{#lambda.ShowMessage}} {{{operationIdOriginal}}} this.snackbarService.show(newErr.error!.message, newErr.error!.statusCode);{{/lambda.ShowMessage}}
                     //@ts-ignore
                     return of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({ errors: newErrors }));
                 }
