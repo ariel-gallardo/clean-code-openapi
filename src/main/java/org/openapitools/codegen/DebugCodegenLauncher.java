@@ -27,12 +27,12 @@ public class DebugCodegenLauncher {
         disableSslVerification();
         CodegenConfigurator configurator = new CodegenConfigurator();
         configurator.setGeneratorName("typescript-angular-custom");
-        configurator.setInputSpec("https://localhost:6001/swagger/docs/v1/client");
+        configurator.setInputSpec("https://localhost:6001/swagger/docs/v1/security");
         configurator.setOutputDir("out");
         configurator.setVerbose(false);
         configurator.setValidateSpec(false);
         Map<String, Object> props = new HashMap<>();
-        props.put("apiName", "Client");
+        props.put("apiName", "Security");
         props.put("useHttpResponse", true);
         configurator.setAdditionalProperties(props);
         DefaultGenerator generator = new DefaultGenerator();

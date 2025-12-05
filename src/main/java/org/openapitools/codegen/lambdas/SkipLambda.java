@@ -11,7 +11,8 @@ public class SkipLambda implements Mustache.Lambda {
     @Override
     public void execute(Fragment frag, Writer out) throws IOException {
         String input = frag.execute();
-        if(!input.contains("Delete") && !input.contains("as any") && !input.contains("data: {  } as ,"))
+        String op = Mustache.compiler().compile("").execute(frag.context());
+        if(!op.contains("LoginPost") && !input.contains("Delete") && !input.contains("as any") && !input.contains("data: {  } as ,"))
             out.write(input);
     }
     

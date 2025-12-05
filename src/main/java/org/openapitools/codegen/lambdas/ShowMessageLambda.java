@@ -12,7 +12,7 @@ public class ShowMessageLambda implements Mustache.Lambda {
     public void execute(Fragment frag, Writer out) throws IOException {
         String content = frag.execute();
         String operation = Mustache.compiler().compile("{{{operationIdOriginal}}}").execute(frag.context());
-        if(!operation.toLowerCase().contains("get")){
+        if(!operation.toLowerCase().contains("get") && !operation.toLowerCase().contains("head")){
            out.write(content.replace(operation, ""));
         }
     }

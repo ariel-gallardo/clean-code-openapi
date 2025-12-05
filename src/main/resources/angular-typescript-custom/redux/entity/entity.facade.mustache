@@ -7,6 +7,7 @@ import {Pagination} from '../../models/common/pagination.model';
 import State from './{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}.state';
 import {NullableFormControl} from '../../models/common/nullable-form-control.model';
 import { FormGroup } from '@angular/forms';
+import { HttpHeaders } from '@angular/common/http';
 
 {{#exports}}
 import { {{{exportName}}} } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{{entityName}}}{{/lambda.KebabCustom}}'; 
@@ -40,9 +41,9 @@ export class {{entityName}}Facade {
 
   {{#operations}}
   {{#operation}}
-  public get {{{operationIdOriginal}}}IsLoaded$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Loaded); }
-  {{#lambda.Skip}}public get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Data); }{{/lambda.Skip}}
-  public get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}HasError); }
+  public get {{{operationIdOriginal}}}IsLoaded$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Loaded).pipe(filter(x => x != null)); }
+  {{#lambda.Skip}}public get {{{operationIdOriginal}}}$(): Observable<{{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Data).pipe(filter(x => x !== null)); }{{/lambda.Skip}}
+  public get {{{operationIdOriginal}}}HasError$(): Observable<boolean> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}HasError).pipe(filter(x => x !== null)); }
   public get {{{operationIdOriginal}}}Errors$(): Observable<ValidationError[][]> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Errors); }
   public get {{{operationIdOriginal}}}Request$(): Observable<{{{operationIdOriginal}}}Request> { return this.store.select(select{{#lambda.pascalcase}}{{{operationIdOriginal}}}{{/lambda.pascalcase}}Request).pipe(filter(x => x !== null)); }
   public {{{operationIdOriginal}}}(){

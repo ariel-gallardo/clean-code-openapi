@@ -19,15 +19,16 @@ import { ValidationErrors } from '@angular/forms';
 import { ValidationError } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/validation-error.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import {SnackbarService} from '@features/snackbar/snackbar-service'; 
+import { Router } from '@angular/router';
+import { BaseResponse } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/base-response.model';
 
-@Injectable(
-    
-)
+@Injectable()
 export class {{entityName}}Effects {
     private actions$ = inject(Actions);
     private api = inject({{{entityName}}}Service);
     private store = inject(Store);
     private snackbarService = inject(SnackbarService);
+    private router = inject(Router);
 
     Init$ = createEffect(() =>
     this.actions$.pipe(
@@ -135,6 +136,7 @@ export class {{entityName}}Effects {
         )
         );
         {{{operationIdOriginal}}}Execute$ = createEffect(() =>
+        // @ts-ignore
         this.actions$.pipe(
             ofType({{entityName}}Actions.{{{operationIdOriginal}}}Execute),
             withLatestFrom(
@@ -162,7 +164,8 @@ export class {{entityName}}Effects {
                         }
                         {{/isArray}}
                         {{^isArray}}
-                        response.body!.data
+                        {{#lambda.IsHeader}}response.headers{{/lambda.IsHeader}}
+                        {{#lambda.IsNotHeader}}response.body!.data{{/lambda.IsNotHeader}}
                         {{/isArray}}
                     })
                 }),
@@ -175,11 +178,8 @@ export class {{entityName}}Effects {
                     {{#lambda.ShowMessage}} {{{operationIdOriginal}}} this.snackbarService.show(newErr.error!.message, newErr.error!.statusCode);{{/lambda.ShowMessage}}
                     return of({{entityName}}Actions.{{{operationIdOriginal}}}SetError({ errors: newErrors }));
                 }
-                {{#lambda.Skip}}
-                else if (newErr.status === 404) {
-                    return of({{entityName}}Actions.{{{operationIdOriginal}}}DataInit());
-                }
-                {{/lambda.Skip}}
+                {{#lambda.Skip}}else if (newErr.status === 404) {return of({{entityName}}Actions.{{{operationIdOriginal}}}DataInit());}{{/lambda.Skip}}
+                {{#lambda.HandleResponseRedirect}}{{/lambda.HandleResponseRedirect}}
                 return EMPTY;
                 })
             );

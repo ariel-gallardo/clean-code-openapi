@@ -10,16 +10,17 @@ import { {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}} } from '@api/{{
 import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/services/{{#lambda.KebabCustom}}{{classname}}{{/lambda.KebabCustom}}.service'; 
 {{/operation}}
 {{/operations}}
+import { HttpHeaders } from '@angular/common/http';
 
 const initialState = {
     {{#operations}}
     {{#operation}}
     {{{operationIdOriginal}}}: {
         firstInit: true,
-        hasError: false,
-        isLoaded: false,
+        hasError: null,
+        isLoaded: null,
         errors: [],
-        {{#lambda.Skip}}data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}},{{/lambda.Skip}}
+        {{#lambda.Skip}}data: {{#isArray}}{currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []}{{/isArray}}{{^isArray}}null{{/isArray}},{{/lambda.Skip}}
         request: null,
     },
     {{/operation}}
@@ -30,20 +31,13 @@ const reducer = createReducer<State>(
   initialState,
   {{#operations}}
   {{#operation}}
-    // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, firstInit: false, hasError: false, errors: [],  isLoaded: false{{#lambda.Skip}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}}, request: null} })),
-    // @ts-ignore
-    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}DataInit, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}}}})),{{/lambda.Skip}}
-    {{#lambda.Skip}}// @ts-ignore{{/lambda.Skip}}
-    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, (state, {data}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, data: data, isLoaded: true, hasError: false, errors: [] }})),{{/lambda.Skip}}
-    // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}SetError, (state,{errors}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, isLoaded: false, hasError: true{{#lambda.Skip}},errors: errors, data: { {{#isArray}}currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []{{/isArray}} } as {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} {{/lambda.Skip}} }})),
-    // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}Success, (state) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, data: state?.{{{operationIdOriginal}}}?.data, isLoaded: true, hasError: false, errors: [] }})),
-    // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}RequestUpdateOneSuccess, (state, {key, value}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, ...state.{{{operationIdOriginal}}} ,request: {...state.{{{operationIdOriginal}}}.request, [key]:value} }})),
-    // @ts-ignore
-    on(Actions.{{{operationIdOriginal}}}RequestUpdateSuccess, (state, {request}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, ...state.{{{operationIdOriginal}}} ,request: request }})),
+    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, firstInit: false, hasError: null, errors: [], isLoaded: null{{#lambda.Skip}}, data: {{#isArray}}{currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []}{{/isArray}}{{^isArray}}null{{/isArray}}   {{/lambda.Skip}}, request: null} })),
+    on(Actions.{{{operationIdOriginal}}}DataInit, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}} {{#lambda.Skip}}, data: {{#isArray}}{currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []}{{/isArray}}{{^isArray}}null{{/isArray}} {{/lambda.Skip}} } })),
+    {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, (state, {data}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, data: data, isLoaded: null, hasError: false, errors: [] }})),{{/lambda.Skip}}
+    on(Actions.{{{operationIdOriginal}}}SetError, (state,{errors}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, isLoaded: false, hasError: true{{#lambda.Skip}},errors: errors {{/lambda.Skip}} }})),
+    on(Actions.{{{operationIdOriginal}}}Success, (state) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, isLoaded: true, hasError: false, errors: [] }})),
+    on(Actions.{{{operationIdOriginal}}}RequestUpdateOneSuccess, (state, {key, value}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, request: {...state.{{{operationIdOriginal}}}.request, [key]: value } }})),
+    on(Actions.{{{operationIdOriginal}}}RequestUpdateSuccess, (state, {request}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, request: request }})),
   {{/operation}}
   {{/operations}}
 );

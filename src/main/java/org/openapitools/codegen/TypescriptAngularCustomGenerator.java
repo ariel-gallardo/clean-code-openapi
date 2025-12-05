@@ -6,6 +6,9 @@ import org.openapitools.codegen.lambdas.EmptyModelFnInternalLambda;
 import org.openapitools.codegen.lambdas.EmptyModelFnLambda;
 import org.openapitools.codegen.lambdas.EmptyReqFnInternalLambda;
 import org.openapitools.codegen.lambdas.EmptyReqFnLambda;
+import org.openapitools.codegen.lambdas.HandleResponseRedirectLambda;
+import org.openapitools.codegen.lambdas.IsHeaderLambda;
+import org.openapitools.codegen.lambdas.IsNotHeaderLambda;
 import org.openapitools.codegen.lambdas.KebabCustomLambda;
 import org.openapitools.codegen.lambdas.OnlyFilterLambda;
 import org.openapitools.codegen.lambdas.RemoveDTOLambda;
@@ -124,8 +127,10 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     .put("EmptyModelFnInternal", new EmptyModelFnInternalLambda())
     .put("EmptyReqFn", new EmptyReqFnLambda())
     .put("EmptyReqFnInternal", new EmptyReqFnInternalLambda())
-    .put("OnlyFilter", new OnlyFilterLambda());
-    
+    .put("OnlyFilter", new OnlyFilterLambda())
+    .put("IsHeader",new IsHeaderLambda())
+    .put("IsNotHeader",new IsNotHeaderLambda())
+    .put("HandleResponseRedirect", new HandleResponseRedirectLambda());
   }
 
 
@@ -236,6 +241,7 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
 
     typeMapping.put("string", "string");
     typeMapping.put("UUID", "string");
+    typeMapping.put("double", "number");
     typeMapping.put("integer", "number");
   }
 

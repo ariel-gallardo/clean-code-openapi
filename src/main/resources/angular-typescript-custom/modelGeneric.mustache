@@ -1,7 +1,15 @@
+{{#hasImports}}
+import {
+    {{#imports}}
+    {{{.}}},
+    {{/imports}}
+} from './';
+{{/hasImports}}
+
 export class {{#lambda.RemoveDTO}}{{classname}}{{/lambda.RemoveDTO}}{{#allParents}}{{#-first}} extends {{/-first}}{{{.}}}{{^-last}}, {{/-last}}{{/allParents}} { {{>modelGenericAdditionalProperties}}
 {{#vars}}
     {{^modelPropertyNamingOriginal}}
-    {{#isReadOnly}}readonly {{/isReadOnly}}{{{name}}}?: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}} | undefined | null;
+    {{#isReadOnly}}readonly {{/isReadOnly}}{{{name}}}?: {{#isEnum}} {{#lambda.RemoveDTO}} {{{datatypeWithEnum}}} {{/lambda.RemoveDTO}} {{/isEnum}}{{^isEnum}} {{#lambda.RemoveDTO}} {{{dataType}}} {{/lambda.RemoveDTO}} {{/isEnum}} | undefined | null;
     {{/modelPropertyNamingOriginal}}
     {{#modelPropertyNamingOriginal}}
     {{#isReadOnly}}readonly {{/isReadOnly}}{{#hasSanitizedName}}'{{{baseName}}}'{{/hasSanitizedName}}{{^hasSanitizedName}}{{{name}}}{{/hasSanitizedName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#isNullable}} | null{{/isNullable}};

@@ -6,13 +6,13 @@ import java.io.Writer;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template.Fragment;
 
-public class AddLambda implements Mustache.Lambda {
+public class IsHeaderLambda implements Mustache.Lambda{
 
     @Override
     public void execute(Fragment frag, Writer out) throws IOException {
-        String text = frag.execute();
-        if(text.contains("Delete") && text.contains("Login"))
-            out.write(text);
+       String text = frag.execute();
+       String operation = Mustache.compiler().compile("{{{operationIdOriginal}}}").execute(frag.context());
+       if(operation.contains("Head")) out.write(text);
     }
     
 }

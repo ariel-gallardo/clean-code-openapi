@@ -12,6 +12,7 @@ import { {{{operationIdOriginal}}}Request } from '@api/{{#lambda.KebabCustom}}{{
 {{/operation}}
 {{/operations}}
 import { PageEvent } from '@angular/material/paginator';
+import { HttpHeaders } from '@angular/common/http';
 
 export class {{entityName}}Actions {
 
@@ -21,23 +22,14 @@ export class {{entityName}}Actions {
 
   static {{operationIdOriginal}}Init = createAction('[{{entityName}}] {{operationIdOriginal}}Init');
   static {{operationIdOriginal}}DataInit = createAction('[{{entityName}}] {{operationIdOriginal}}DataInit');
-  static {{operationIdOriginal}}Execute = createAction(
-    '[{{entityName}}] {{operationIdOriginal}} Execute'
-  );
+  static {{operationIdOriginal}}Execute = createAction('[{{entityName}}] {{operationIdOriginal}} Execute');
   {{#lambda.Skip}} static {{operationIdOriginal}}SetData = createAction('[{{entityName}}] {{operationIdOriginal}} SetData', props<{data: {{#lambda.Result}}{{{returnType}}}{{/lambda.Result}} }>()); {{/lambda.Skip}}
   static {{operationIdOriginal}}RequestUpdate = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdate', props<{ request: Partial<{{operationIdOriginal}}Request> }>());
+  static {{operationIdOriginal}}RequestUpdateSuccess = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateSuccess', props<{request: {{operationIdOriginal}}Request }>());
   static {{operationIdOriginal}}RequestUpdateOne = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateOne', props<{ request: Partial<{{operationIdOriginal}}Request> }>());
   static {{operationIdOriginal}}RequestUpdateOneSuccess = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateOneSuccess', props<{key:string,value:any}>());
-  static {{operationIdOriginal}}RequestUpdateSuccess = createAction('[{{entityName}}] {{operationIdOriginal}} RequestUpdateSuccess', props<{request: {{operationIdOriginal}}Request }>());
-
-  static {{operationIdOriginal}}Success = createAction(
-    '[{{entityName}}] {{operationIdOriginal}} Success',
-  );
-
-  static {{operationIdOriginal}}SetError = createAction(
-  '[{{entityName}}] {{operationIdOriginal}} SetError',
-  props<{errors: ValidationError[][]}>()
-  );
+  static {{operationIdOriginal}}Success = createAction('[{{entityName}}] {{operationIdOriginal}} Success');
+  static {{operationIdOriginal}}SetError = createAction('[{{entityName}}] {{operationIdOriginal}} SetError', props<{errors: ValidationError[][]}>());
   {{#lambda.UsePage}}
   {{=<% %>=}}
     <% returnType %> 
