@@ -14,7 +14,7 @@ public class HandleResponseRedirectLambda implements Mustache.Lambda{
        if(operation.equals("LoginPost")){
         out.write("else if (newErr.status === 401 && newErr.error){ const res = newErr.error as BaseResponse; this.snackbarService.show(res.message, res.statusCode);}");
        }else{
-        out.write("if(newErr.status === 401){cookieStore.delete('token');this.router.navigate(['/users/login']);}else if(newErr.status === 403 && newErr.error){const res = newErr.error as BaseResponse;this.snackbarService.show(res.message, res.statusCode);}");
+        out.write("if(newErr.status === 401){cookieStore.delete('token');this.router.navigate(['/users/login']);this.dialog.closeAll();}else if(newErr.status === 403 && newErr.error){const res = newErr.error as BaseResponse;this.snackbarService.show(res.message, res.statusCode);}");
        }
     }
     
