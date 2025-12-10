@@ -54,7 +54,7 @@ export class {{entityName}}Effects {
             ofType(<% entityName %>Actions.<% operationIdOriginal %>ChangePage),
             map(({ event }) => ({
                 pageSize: event.pageSize,
-                currentPage: event.pageIndex + 1
+                page: event.pageIndex + 1
             })),
             map(request =>
                 //@ts-ignore
