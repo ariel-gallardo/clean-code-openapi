@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams,
         }       from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
-
+import {cleanObject} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/utils/clean-object';
 import {Response} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/response.model';
 import {Pagination} from '@api/{{#lambda.KebabCustom}}{{apiName}}{{/lambda.KebabCustom}}/models/common/pagination.model';
 {{#imports}}
@@ -98,7 +98,8 @@ export class {{classname}}Service extends BaseService {
     public {{operationIdOriginal}}({{^useSingleRequestParameter}}{{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}{{/useSingleRequestParameter}}{{#useSingleRequestParameter}}{{#allParams.0}}requestParameters{{^hasRequiredParams}}?{{/hasRequiredParams}}: {{{operationIdOriginal}}}Request, {{/allParams.0}}{{/useSingleRequestParameter}}observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: {{#produces}}'{{{mediaType}}}'{{^-last}} | {{/-last}}{{/produces}}{{^produces}}undefined{{/produces}},{{#httpContextInOptions}} context?: HttpContext{{/httpContextInOptions}}{{#httpTransferCacheInOptions}}, transferCache?: boolean{{/httpTransferCacheInOptions}}}): Observable<any> {
 {{#allParams}}
 {{#useSingleRequestParameter}}
-        const {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}} = requestParameters{{^hasRequiredVars}}?{{/hasRequiredVars}}.{{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}};
+        let {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}} = requestParameters{{^hasRequiredVars}}?{{/hasRequiredVars}}.{{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}};
+        {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}} = cleanObject({{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}});
 {{/useSingleRequestParameter}}
 {{#required}}
         if ({{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}} === null || {{#lambda.RemoveDTO}}{{paramName}}{{/lambda.RemoveDTO}} === undefined) {

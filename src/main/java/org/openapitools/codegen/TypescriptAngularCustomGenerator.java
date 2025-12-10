@@ -181,6 +181,7 @@ public class TypescriptAngularCustomGenerator extends DefaultCodegen implements 
     supportingFiles.add(new SupportingFile("param.mustache", String.format("%s/%s",baseFileFolder(),"param.ts")));
     supportingFiles.add(new SupportingFile("variables.mustache", String.format("%s/%s",baseFileFolder(),"variables.ts")));
     supportingFiles.add(new SupportingFile("models/base-response.model.mustache", String.format("%s/%s",modelFileFolder(),"base-response.model.ts")));
+    supportingFiles.add(new SupportingFile("utils/cleanobject.mustache", String.format("%s/%s/%s",baseFileFolder(),"utils","clean-object.ts")));
   }
 
   private String reduxPackage(){
