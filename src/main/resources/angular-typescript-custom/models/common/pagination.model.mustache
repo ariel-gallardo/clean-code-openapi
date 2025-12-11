@@ -1,6 +1,6 @@
 export interface Pagination<T> {
    items: Array<T>
-   currentPage: number
+   page: number
    totalPages: number
    pageSize: number
    totalCount: number

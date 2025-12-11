@@ -20,7 +20,7 @@ const initialState = {
         hasError: null,
         isLoaded: null,
         errors: [],
-        {{#lambda.Skip}}data: {{#isArray}}{currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []}{{/isArray}}{{^isArray}}null{{/isArray}},{{/lambda.Skip}}
+        {{#lambda.Skip}}data: {{#isArray}}{page: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []}{{/isArray}}{{^isArray}}null{{/isArray}},{{/lambda.Skip}}
         request: null,
     },
     {{/operation}}
@@ -31,8 +31,8 @@ const reducer = createReducer<State>(
   initialState,
   {{#operations}}
   {{#operation}}
-    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, firstInit: false, hasError: null, errors: [], isLoaded: null{{#lambda.Skip}}, data: {{#isArray}}{currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []}{{/isArray}}{{^isArray}}null{{/isArray}}   {{/lambda.Skip}}, request: null} })),
-    on(Actions.{{{operationIdOriginal}}}DataInit, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}} {{#lambda.Skip}}, data: {{#isArray}}{currentPage: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []}{{/isArray}}{{^isArray}}null{{/isArray}} {{/lambda.Skip}} } })),
+    on(Actions.{{{operationIdOriginal}}}Init, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}}, firstInit: false, hasError: null, errors: [], isLoaded: null{{#lambda.Skip}}, data: {{#isArray}}{page: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []}{{/isArray}}{{^isArray}}null{{/isArray}}   {{/lambda.Skip}}, request: null} })),
+    on(Actions.{{{operationIdOriginal}}}DataInit, state => ({...state, {{{operationIdOriginal}}}:{ ...state.{{{operationIdOriginal}}} {{#lambda.Skip}}, data: {{#isArray}}{page: 0,totalPages: 0,pageSize: 0,totalCount: 0, items: []}{{/isArray}}{{^isArray}}null{{/isArray}} {{/lambda.Skip}} } })),
     {{#lambda.Skip}}on(Actions.{{{operationIdOriginal}}}SetData, (state, {data}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, data: data, isLoaded: null, hasError: false, errors: [] }})),{{/lambda.Skip}}
     on(Actions.{{{operationIdOriginal}}}SetError, (state,{errors}) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, isLoaded: false, hasError: true{{#lambda.Skip}},errors: errors {{/lambda.Skip}} }})),
     on(Actions.{{{operationIdOriginal}}}Success, (state) => ({ ...state, {{{operationIdOriginal}}}: {...state.{{{operationIdOriginal}}}, isLoaded: true, hasError: false, errors: [] }})),
