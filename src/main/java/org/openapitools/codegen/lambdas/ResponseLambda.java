@@ -17,6 +17,9 @@ public class ResponseLambda implements Mustache.Lambda {
         else if (input.contains("[]")) {
             String type = input.replace("[]", "");
             out.write(String.format("Response<Pagination<%s>>", type));
+        }else if(input.contains("PagedList")){
+                String type = input.replace("PagedList", "").replace("DTO", "");
+                out.write(String.format("Response<Pagination<%s>>", type));
         }else{
             out.write(String.format("Response<%s>", input));
         }

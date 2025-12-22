@@ -14,6 +14,9 @@ public class CheckPaginationLambda implements Mustache.Lambda {
         if (input.contains("[]")) {
             String type = input.replace("[]", "");
             out.write(String.format("Pagination<%s>", type));
+        }else if (input.contains("PagedList")){ 
+            String type = input.replace("PagedList", "").replace("DTO", "");
+            out.write(String.format("Pagination<%s>", type));
         }else{
             out.write(input);
         }

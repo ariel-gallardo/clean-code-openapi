@@ -14,6 +14,8 @@ public class UsePageLambda implements Mustache.Lambda {
         String returnType = Mustache.compiler().compile("{{{returnType}}}").execute(frag.context());
         if(returnType.contains("[]")){
             out.write(input.replace(returnType, ""));
+        }else if(returnType.contains("PagedList")){
+            out.write(input.replace(returnType, ""));
         }
     }
     

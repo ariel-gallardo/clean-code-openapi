@@ -22,7 +22,12 @@ public class ResultLambda implements Mustache.Lambda {
             else if (input.contains("[]")) {
                 String type = input.replace("[]", "");
                 out.write(String.format("Pagination<%s>", type));
-            }else if(input.isEmpty()){
+            }
+            else if(input.contains("PagedList")){
+                String type = input.replace("PagedList", "").replace("DTO", "");
+                out.write(String.format("Pagination<%s>", type));
+            }
+            else if(input.isEmpty()){
                 out.write("any");
             }else{
                 out.write(input);

@@ -11,7 +11,13 @@ public class RemoveDTOLambda implements Mustache.Lambda {
     @Override
     public void execute(Fragment frag, Writer out) throws IOException {
         String text = frag.execute();
-        out.write(text.replace("DTO",""));
+        if(text.contains("PagedList"))
+        {
+            text = text.replace("PagedList", "").replace("DTO", "");
+            out.write(String.format("Pagination<%s>", text));
+        }
+        else
+            out.write(text.replace("DTO",""));
     }
     
 }
